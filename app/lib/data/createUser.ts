@@ -2,6 +2,7 @@
 import { fetchUserData } from './fetch';
 // Constants
 import { USER_DATA_URL } from './urls';
+
 /**
  * Creates a new user in the database.
  *
@@ -15,7 +16,9 @@ export const createUserDB = async ({ user }: { user: UserDataAPI }) => {
     name: user.name,
     email: user.email,
     image: user.image,
+    countryCode: user.countryCode,
   };
+  
   try {
     const response = await fetch(USER_DATA_URL, {
       method: 'POST',
@@ -38,8 +41,9 @@ export const createUserDB = async ({ user }: { user: UserDataAPI }) => {
  * @param {UserDataAPI} params.user - The user data to be validated and created if necessary.
  * @returns {Promise} - A Promise that resolves when the validation and user creation process is complete.
  */
-export const validateUser = async ({ user }: { user: UserDataAPI }) => {
+export const validateUser = async ({ user, countryId }: { user: UserDataAPI; countryId: string }) => {
   const { id, name, email, image } = user;
+  console.log(countryId);
   try {
     const userResponse = await fetchUserData({ email: email as string });
     if (userResponse.data.length === 0) {
@@ -48,6 +52,7 @@ export const validateUser = async ({ user }: { user: UserDataAPI }) => {
         name: name,
         email: email,
         image: image,
+        countryCode: countryId,
       };
       await createUserDB({ user: newUser });
     }

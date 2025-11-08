@@ -10,6 +10,7 @@ interface YapeFormProps {
   minAmount: number;
   userEmail: string;
   userId: string;
+  countryCode: string;
   onSuccess: (msg: string) => void;
   onError: (msg: string) => void;
 }
@@ -27,6 +28,7 @@ export function YapeForm({
   minAmount,
   userEmail,
   userId,
+  countryCode,
   onSuccess,
   onError,
 }: YapeFormProps) {
@@ -106,7 +108,7 @@ export function YapeForm({
       const data = await res.json();
       if(res.ok && data.status === 'approved'){
         // Guardar pago en la base de datos
-        await saveMoviePay(String(data.id), userId, movieId, amount);
+        await saveMoviePay(String(data.id), userId, movieId, amount, phone, 0, countryCode);
 
         onSuccess('¡Pago con Yape exitoso!');
         // Limpiar datos de Yape

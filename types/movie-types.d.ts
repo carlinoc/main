@@ -29,6 +29,7 @@ interface MovieDetailsAPI {
   description: string; // Movie description
   duration: number; // Duration of the movie in minutes
   price: string; // Price of the movie
+  priceUSD: string; // Price of the movie in USD
   trailer: string; // URL for the movie trailer
   urlId: string; // Unique identifier for the movie URL
   whySee: string; // Reason to watch the movie
@@ -128,6 +129,7 @@ interface UserDataAPI {
   movies?: MovieUserList[]; // Array of MovieUserList objects associated with the user (nullable)
   name: string; // User's name
   image: string; // URL for the user's profile image
+  countryCode: string;
 }
 
 interface UserDataRequestAPI {

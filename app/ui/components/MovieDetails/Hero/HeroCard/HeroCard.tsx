@@ -7,6 +7,7 @@ import { ConfigPayment, HeroCardProps } from './HeroCard.model';
 import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
+import {useCountry} from '@/app/context/CountryContext';
 // Object to map payment_type to configuration
 const paymentTypeConfig: Record<string, ConfigPayment> = {
   PT: {
@@ -56,7 +57,7 @@ const paymentTypeConfig: Record<string, ConfigPayment> = {
  */
 export function HeroCard({ movieData}: HeroCardProps): JSX.Element {
   // Destructure movieData for easier access
-  const { description, whySee, image2, price, payment_type } = movieData;
+  const { description, whySee, image2, price, priceUSD, payment_type } = movieData;
   const [hasPaid, setHasPaid] = useState(false);
   // Retrieve configuration based on payment_type
   const config: ConfigPayment = paymentTypeConfig[payment_type] || paymentTypeConfig['default'];
@@ -66,6 +67,11 @@ export function HeroCard({ movieData}: HeroCardProps): JSX.Element {
   const handlePaid = () => {
     setHasPaid(true);
   }
+
+  const COUNTRY_DEFAULT = process.env.NEXT_PUBLIC_COUNTRY_DEFAULT;
+
+  // Usar el contexto de país
+  const { countryCode, isLoading: isDetectingCountry } = useCountry();
 
   return (
     <>
@@ -93,8 +99,17 @@ export function HeroCard({ movieData}: HeroCardProps): JSX.Element {
               {payment_type && (
                 <span className="span-lg flex items-center text-textColorNeutral-50 font-medium">
                   {text}
-                  <span className="text-3xl font-bold ml-3 mr-1">{`S/${price}`}</span>
-                  <span className="span-sm font-medium">(PEN)</span>
+                  {countryCode === COUNTRY_DEFAULT ? (
+                    <>
+                      <span className="text-3xl font-bold ml-3 mr-1">{`S/ ${price}`}</span>
+                      <span className="span-sm font-medium">(PEN)</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-3xl font-bold ml-3 mr-1">{`$ ${priceUSD}`}</span>
+                      <span className="span-sm font-medium">(USD)</span>
+                    </>
+                  )}
                 </span>
               )}
               <span className="span-md text-textColorNeutral-50 font-semibold">

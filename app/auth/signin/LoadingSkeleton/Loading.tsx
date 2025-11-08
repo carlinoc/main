@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import siningCover from '@/public/images/siningCover.jpg';
 import cinergiaLogo from '@/public/cinergiaLogoWeb3.svg';
 
 export function Loading() {
@@ -10,17 +9,7 @@ export function Loading() {
     >
       <div className="overflow-y-auto w-full h-full">
         <div className="w-full flex flex-col items-center space-y-4 lg:flex-row lg:justify-center lg:space-y-0">
-          <figure className="relative w-full lg:w-3/5 aspect-square lg:h-screen border-borderNeutral-700 md:border-r">
-            <Image
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1080px) 100vw, 1536px"
-              src={siningCover}
-              alt={'Cover Login'}
-              placeholder="blur"
-              priority
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-            />
-          </figure>
+          
           <section className="flex justify-center w-full lg:w-2/5">
             <div className="w-11/12 max-w-2xl px-4 py-8 lg:w-10/12 space-y-10 rounded-md divide-y divide-borderNeutral-800">
               <section className="flex flex-col items-center gap-4">

@@ -1,11 +1,12 @@
 // Import necessary dependencies and types
 import { Inter } from 'next/font/google';
 import '@/app/styles/globals.css';
-import Script from 'next/script';
 import { Header } from '@/app/ui/components/shared/Header';
 import { Footer } from '@/app/ui/components/shared/Footer';
 import { ScrollWrapper } from '@/app/lib/utils/ScrollWrapper';
 import GoogleAuthProvider from './context/GoogleAuthProvider';
+import { CountryProvider } from './context/CountryContext';
+
 // Initialize the Inter font with Latin subset
 const inter = Inter({ subsets: ['latin'] });
 /**
@@ -27,19 +28,21 @@ export default function RootLayout({
     <html lang="en" data-theme="cinergia">
       <GoogleAuthProvider>
         <ScrollWrapper>
-          <body className={`${inter.className} antialiased`}>
-            {/* Header with navigation bar */}
-            <Header />
-            {/* Main content */}
-            {children}
+          <CountryProvider>
+            <body className={`${inter.className} antialiased`}>
+              {/* Header with navigation bar */}
+              <Header />
+              {/* Main content */}
+              <main id="main-content">
+                {children}
+              </main>
 
-            {/* Footer component */}
-            <Footer />
-          </body>
+              {/* Footer component */}
+              <Footer />
+            </body>
+          </CountryProvider>
         </ScrollWrapper>
       </GoogleAuthProvider>
-      {/* Include the Izipay payment script */}
-      {/* <Script src="https://sandbox-checkout.izipay.pe/payments/v1/js/index.js" /> */}
     </html>
   );
 }
