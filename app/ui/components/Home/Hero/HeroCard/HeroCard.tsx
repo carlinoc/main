@@ -20,13 +20,23 @@ import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
  */
 export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
   // Destructure movieData for easier access
-  const { name, slug, duration, release_year, description, image2, category, urlId } = movieData;
+  const {
+    name,
+    slug,
+    duration,
+    release_year,
+    description,
+    image2,
+    category,
+    urlId,
+  } = movieData;
   const [date, setDate] = useState<number>(0);
 
-  const pathBackground = urlId==null ? "" : `${CDN_IMAGES_BASE_URL}`;
+  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
   const backgroundImage = `${pathBackground}${image2}`;
 
-  const linkUrl = urlId==null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
+  const linkUrl =
+    urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
   useEffect(() => {
     const year = new Date(release_year).getFullYear();

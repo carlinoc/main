@@ -21,7 +21,7 @@ export function Hero({ genreInfo, movieInfo }: HeroProps) {
   // Destructure genre information
   const { description } = genreInfo;
 
-  const pathBackground = urlId==null ? "" : `${CDN_IMAGES_BASE_URL}`;
+  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
   const backgroundImage = `${pathBackground}${image2}`;
 
   return (

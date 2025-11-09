@@ -11,7 +11,6 @@ import { MovieCardProps } from './MovieCard.model';
 import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 // Internal Routes
 import { routesPaths } from '@/app/routes/routes';
-import { constants } from 'buffer';
 /**
  * MovieCard Component
  *
@@ -45,13 +44,14 @@ export function MovieCard({ movieData }: MovieCardProps) {
     }
   }, [inView, isImageVisible]);
 
-  const imageUrl = urlId==null ? image1 : `${CDN_IMAGES_BASE_URL}${poster1}`;
+  const imageUrl = urlId == null ? image1 : `${CDN_IMAGES_BASE_URL}${poster1}`;
   //const imageURL = `${CDN_IMAGES_BASE_URL}${poster1}`;
   const imageSrc = isImageVisible
     ? imageUrl
     : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=';
 
-  const linkUrl = urlId==null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;  
+  const linkUrl =
+    urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
   return (
     /**

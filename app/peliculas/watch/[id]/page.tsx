@@ -70,7 +70,8 @@ export default async function WatchPage({
 }: WatchPageProps): Promise<JSX.Element> {
   const movieId: string = params.id;
   // Fetches movie information based on the provided ID
-  const { data }: { data: MovieDetailsAPI[] } = await fetchMovieDetails(movieId);
+  const { data }: { data: MovieDetailsAPI[] } =
+    await fetchMovieDetails(movieId);
   const movieData = data[0];
   if (!movieData || movieData.payment_type === paymentType.free) {
     return <NotFound />;

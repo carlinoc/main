@@ -1,1 +1,1 @@
-export {PlayerYT} from './PlayerYT';
+export { PlayerYT } from './PlayerYT';

@@ -22,11 +22,12 @@ export function MovieCardAPI({ movieData }: MovieCardAPIProps): JSX.Element {
   const { name, slug, releaseYear, image1, urlId } = movieData;
   //console.log(movieData);
   // URL for the movie poster image
-  const pathBackground = urlId==null ? "" : CDN_IMAGES_BASE_URL;
+  const pathBackground = urlId == null ? '' : CDN_IMAGES_BASE_URL;
   const backgroundImage = `${pathBackground}${image1}`;
 
-  const linkUrl = urlId==null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
-  
+  const linkUrl =
+    urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
+
   return (
     <ul>
       <li className="group overflow-hidden rounded-sm bg-bgSecondaryDark md:hover:bg-dark-800">
@@ -55,7 +56,8 @@ export function MovieCardAPI({ movieData }: MovieCardAPIProps): JSX.Element {
               </span>
               {/* Release date */}
               <span className="span-sm text-xs text-textColorNeutral-50 font-semibold">
-                {releaseYear !== undefined && new Date(releaseYear).getFullYear()}
+                {releaseYear !== undefined &&
+                  new Date(releaseYear).getFullYear()}
               </span>
             </div>
           </section>

@@ -23,7 +23,8 @@ export async function Hero(): Promise<JSX.Element> {
     const movieListReverse: MovieAPI[] = sectionInfo?.movies.reverse();
     // Retrieve details of the first movie in the list
     const firstMovie: MovieAPI = movieListReverse[0];
-    const { data: firstMovieData }: { data: MovieDetailsAPI[] } = await fetchMovieDetails(firstMovie?.slug);
+    const { data: firstMovieData }: { data: MovieDetailsAPI[] } =
+      await fetchMovieDetails(firstMovie?.slug);
     const firstMovieDetails: MovieDetailsAPI = firstMovieData[0];
     /**
      * Render the JSX for the Hero component

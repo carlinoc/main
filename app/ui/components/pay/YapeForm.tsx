@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { saveMoviePay } from '@/app/lib/data/saveMoviePay'
+import { saveMoviePay } from '@/app/lib/data/saveMoviePay';
 import { formatPrice } from '@/app/lib/utils/formatPrice';
 
 interface YapeFormProps {
@@ -15,9 +15,19 @@ interface YapeFormProps {
   onError: (msg: string) => void;
 }
 
+// ✅ Definimos una interfaz mínima para evitar el uso de `any`
+interface MercadoPagoInstance {
+  yape: (options: { phoneNumber: string; otp: string }) => {
+    create: () => Promise<{ id?: string }>;
+  };
+}
+
 declare global {
   interface Window {
-    MercadoPago: any;
+    MercadoPago?: new (
+      publicKey: string,
+      options: { locale: string },
+    ) => MercadoPagoInstance;
   }
 }
 
@@ -36,10 +46,14 @@ export function YapeForm({
   const [otp, setOtp] = useState('');
   const [amount, setAmount] = useState(minAmount);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ phone?: string; otp?: string; amount?: string }>({});
+  const [errors, setErrors] = useState<{
+    phone?: string;
+    otp?: string;
+    amount?: string;
+  }>({});
   const [alertPay, setAlertPay] = useState<string | null>(null);
 
-  // ✅ Cargar MercadoPago SDK solo si se abre el modal
+  // ✅ Cargar SDK solo si se abre el modal
   useEffect(() => {
     if (!isOpen) return;
     if (!window.MercadoPago) {
@@ -54,7 +68,7 @@ export function YapeForm({
   if (!isOpen) return null;
 
   // ✅ Validar datos antes de enviar
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
     if (!/^\d{9}$/.test(phone)) {
@@ -73,7 +87,7 @@ export function YapeForm({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAlertPay(null);
 
@@ -86,6 +100,10 @@ export function YapeForm({
       setLoading(true);
       const publicKey = process.env.NEXT_PUBLIC_MP_PUBLIC_KEY;
       if (!publicKey) throw new Error('Falta la clave pública de MercadoPago');
+
+      if (!window.MercadoPago) {
+        throw new Error('SDK de MercadoPago no disponible');
+      }
 
       const mp = new window.MercadoPago(publicKey, { locale: 'es-PE' });
       const yape = mp.yape({ phoneNumber: phone, otp });
@@ -106,28 +124,35 @@ export function YapeForm({
       });
 
       const data = await res.json();
-      if(res.ok && data.status === 'approved'){
-        // Guardar pago en la base de datos
-        await saveMoviePay(String(data.id), userId, movieId, amount, phone, 0, countryCode);
-
+      if (res.ok && data.status === 'approved') {
+        await saveMoviePay(
+          String(data.id),
+          userId,
+          movieId,
+          amount,
+          phone,
+          0,
+          countryCode,
+        );
         onSuccess('¡Pago con Yape exitoso!');
-        // Limpiar datos de Yape
         setPhone('');
         setOtp('');
         setAmount(minAmount);
         setErrors({});
         setAlertPay(null);
-      }else{
-        if(data.status === 'rejected'){
-          setAlertPay('Tu pago ha sido rechazado. Verifica tus datos e intenta nuevamente.');
-          return;
-        }else{
-          setAlertPay('No pudimos procesar tu pago. Por favor, intenta de nuevo.');
-        return;
-        }
+      } else {
+        setAlertPay(
+          data.status === 'rejected'
+            ? 'Tu pago ha sido rechazado. Verifica tus datos e intenta nuevamente.'
+            : 'No pudimos procesar tu pago. Por favor, intenta de nuevo.',
+        );
       }
-    } catch (err: any) {
-      onError(`Error al realizar el pago: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        onError(`Error al realizar el pago: ${err.message}`);
+      } else {
+        onError('Ocurrió un error desconocido.');
+      }
     } finally {
       setLoading(false);
     }
@@ -136,10 +161,9 @@ export function YapeForm({
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/50 to-purple-900/30 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
-        
         {/* Decoración superior */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 opacity-10"></div>
-        
+
         <button
           onClick={onClose}
           className="absolute right-4 top-4 z-10 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 hover:rotate-90"
@@ -150,9 +174,9 @@ export function YapeForm({
         <div className="relative p-6">
           {/* Logo de Cinergia */}
           <div className="flex justify-center mb-3">
-            <img 
-              src="/cinergiaLogoWeb1.svg" 
-              alt="Cinergia" 
+            <img
+              src="/cinergiaLogoWeb1.svg"
+              alt="Cinergia"
               className="h-10 object-contain drop-shadow-lg"
             />
           </div>
@@ -162,7 +186,9 @@ export function YapeForm({
             <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">
               Donar con Yape
             </h2>
-            <p className="text-xs text-gray-500">Completa los datos para realizar tu donación</p>
+            <p className="text-xs text-gray-500">
+              Completa los datos para realizar tu donación
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -218,10 +244,15 @@ export function YapeForm({
             {/* Monto a donar */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                💰 Monto a donar <span className="text-gray-400 text-xs">(mínimo S/ {formatPrice(minAmount)})</span>
+                💰 Monto a donar{' '}
+                <span className="text-gray-400 text-xs">
+                  (mínimo S/ {formatPrice(minAmount)})
+                </span>
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">S/</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                  S/
+                </span>
                 <input
                   type="number"
                   value={formatPrice(amount)}
@@ -254,8 +285,20 @@ export function YapeForm({
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                   Procesando pago...
                 </span>
@@ -276,15 +319,15 @@ export function YapeForm({
 
           {/* Logos de Yape y Mercado Pago */}
           <div className="flex items-center justify-center gap-6 mt-5 pt-4 border-t-2 border-gray-100">
-            <img 
+            <img
               src="/images/logoyape1.png"
-              alt="Yape" 
+              alt="Yape"
               className="h-10 object-contain opacity-80 hover:opacity-100 transition-opacity"
             />
             <div className="w-px h-8 bg-gray-200"></div>
-            <img 
-              src="/images/mplogo1.png" 
-              alt="Mercado Pago" 
+            <img
+              src="/images/mplogo1.png"
+              alt="Mercado Pago"
               className="h-10 object-contain opacity-80 hover:opacity-100 transition-opacity"
             />
           </div>

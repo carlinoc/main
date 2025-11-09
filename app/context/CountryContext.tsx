@@ -1,6 +1,12 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
 
 interface CountryData {
   countryCode: string | null;
@@ -36,7 +42,11 @@ export function CountryProvider({ children }: CountryProviderProps) {
       const now = Date.now();
 
       // Si hay cache y tiene menos de 24 horas, usarlo
-      if (cachedCountry && cacheTime && now - parseInt(cacheTime) < 72 * 60 * 60 * 1000) {
+      if (
+        cachedCountry &&
+        cacheTime &&
+        now - parseInt(cacheTime) < 72 * 60 * 60 * 1000
+      ) {
         const cached = JSON.parse(cachedCountry);
         setCountryCode(cached.code);
         setCountryName(cached.name);
@@ -48,25 +58,27 @@ export function CountryProvider({ children }: CountryProviderProps) {
       // Detectar país desde API
       //console.log('🌍 Detectando país del usuario...');
       const response = await fetch('https://ipapi.co/json/');
-      
+
       if (!response.ok) {
         throw new Error('Error al detectar ubicación');
       }
 
       const data = await response.json();
-      
+
       setCountryCode(data.country_code);
       setCountryName(data.country_name);
 
       // Guardar en localStorage para próximas visitas
-      localStorage.setItem('userCountry', JSON.stringify({
-        code: data.country_code,
-        name: data.country_name,
-      }));
+      localStorage.setItem(
+        'userCountry',
+        JSON.stringify({
+          code: data.country_code,
+          name: data.country_name,
+        }),
+      );
       localStorage.setItem('userCountryTime', now.toString());
 
       //console.log('✅ País detectado:', data.country_name, `(${data.country_code})`);
-      
     } catch (err) {
       console.error('❌ Error detectando país:', err);
       setError('No se pudo detectar el país');

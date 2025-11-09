@@ -12,7 +12,7 @@ export interface MoviePaymentData {
 export interface ApiResponse {
   success?: boolean;
   message?: string;
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 export async function saveMoviePay(
@@ -20,9 +20,9 @@ export async function saveMoviePay(
   clientId: string,
   movieId: string,
   amount: number,
-  yapeNumber: string,  
+  yapeNumber: string,
   amountUSD: number,
-  countryCode: string
+  countryCode: string,
 ): Promise<ApiResponse> {
   try {
     const data: MoviePaymentData = {
@@ -35,7 +35,7 @@ export async function saveMoviePay(
       countryCode,
     };
 
-    const response = await fetch( '/api/save-movie', {
+    const response = await fetch('/api/save-movie', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

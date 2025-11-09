@@ -9,7 +9,6 @@ export function Loading() {
     >
       <div className="overflow-y-auto w-full h-full">
         <div className="w-full flex flex-col items-center space-y-4 lg:flex-row lg:justify-center lg:space-y-0">
-          
           <section className="flex justify-center w-full lg:w-2/5">
             <div className="w-11/12 max-w-2xl px-4 py-8 lg:w-10/12 space-y-10 rounded-md divide-y divide-borderNeutral-800">
               <section className="flex flex-col items-center gap-4">

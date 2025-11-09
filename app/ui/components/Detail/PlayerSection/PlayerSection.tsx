@@ -1,11 +1,11 @@
-import { Header } from "../../Watch/VideoSection/Header";
-import { PlayerYT } from "../DetailCard/PlayerYT";
-import { PlayerSectionProps } from "./PlayerSection.model";
+import { Header } from '../../Watch/VideoSection/Header';
+import { PlayerYT } from '../DetailCard/PlayerYT';
+import { PlayerSectionProps } from './PlayerSection.model';
 
 export function PlayerSection({ movieData }: PlayerSectionProps) {
   // Extract the unique identifier for the video
-  const {ytUrlId} = movieData;
-    
+  const { ytUrlId } = movieData;
+
   // Return JSX representation of the VideoSection component
   return (
     <section className="flex flex-col justify-center items-center w-full">
@@ -14,9 +14,7 @@ export function PlayerSection({ movieData }: PlayerSectionProps) {
           <Header movieData={movieData} />
         </section>
         <article className="w-full aspect-video">
-            <PlayerYT
-              params={{urlId: ytUrlId, id: String(movieData.id)}}
-            />
+          <PlayerYT params={{ urlId: ytUrlId, id: String(movieData.id) }} />
         </article>
       </article>
     </section>

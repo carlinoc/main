@@ -34,7 +34,7 @@ export async function ListSection(): Promise<JSX.Element> {
 
     // Fetch movie data for the combined genre list
     const moviesByGenre = await fetchMovieDataForGenres(allGenres);
-    
+
     return (
       /**
        * Rendered section displaying a list of movies organized by genre.

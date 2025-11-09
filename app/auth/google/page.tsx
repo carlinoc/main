@@ -6,7 +6,7 @@ import { signIn, useSession } from 'next-auth/react';
 // Import internal utilities and components
 import { validateUser } from '@/app/lib/data/createUser';
 import { Loading } from './LoadingSkeleton';
-import {useCountry} from '@/app/context/CountryContext';
+import { useCountry } from '@/app/context/CountryContext';
 /**
  * GooglePage Component
  *
@@ -28,7 +28,7 @@ export default function GooglePage(): JSX.Element {
   const { data: session, status } = useSession();
 
   const { countryCode } = useCountry();
-  
+
   // useEffect hook to perform actions when the component mounts
   useEffect(() => {
     // Function to fetch data and handle authentication
@@ -39,7 +39,10 @@ export default function GooglePage(): JSX.Element {
       }
       // If a session exists, validate the user and close the window
       if (session) {
-        await validateUser({ user: session.user as UserDataAPI, countryId: countryCode });
+        await validateUser({
+          user: session.user as UserDataAPI,
+          countryId: countryCode,
+        });
         window.close();
       }
     };

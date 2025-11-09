@@ -41,10 +41,11 @@ export function RecommendedMovieBanner({
   // Destructure movieData to extract relevant information
   const { name, description, slug, image2, agerates, urlId } = movieData;
   // Construct the background image URL
-  const pathBackground = urlId==null ? "" : `${CDN_IMAGES_BASE_URL}`;
+  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
   const backgroundImage = `${pathBackground}${image2}`;
 
-  const linkUrl = urlId==null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
+  const linkUrl =
+    urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
   const backgroundImageUrl = background
     ? `url('${CDN_IMAGES_BASE_URL}${background}')`

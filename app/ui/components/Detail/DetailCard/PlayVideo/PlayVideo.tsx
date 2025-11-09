@@ -3,16 +3,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PlayVideoProps } from '../DetailCard.model';
 
-export function PlayVideo({movieData}: PlayVideoProps): JSX.Element {
-    const { slug } = movieData;
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+export function PlayVideo({ movieData }: PlayVideoProps): JSX.Element {
+  const { slug } = movieData;
+  const router = useRouter();
+  const [isLoading] = useState(false);
 
-    const handleClick = () => {
-      router.push(`/pelicula/ver/${slug}`);
-    };
+  const handleClick = () => {
+    router.push(`/pelicula/ver/${slug}`);
+  };
 
-    return (
+  return (
     <>
       <button
         type="button"

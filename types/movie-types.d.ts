@@ -8,7 +8,7 @@ interface MovieAPI {
   image2: string; // URL for the second image
   poster1: string; // URL for the first poster image
   poster2: string;
-  urlId: string; 
+  urlId: string;
 }
 
 // Movie List API types

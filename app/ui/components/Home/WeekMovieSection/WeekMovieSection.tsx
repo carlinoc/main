@@ -1,9 +1,7 @@
 // Import necessary dependencies and types
-import { Suspense } from 'react';
 import { fetchHomeSection, fetchMovieDetails } from '@/app/lib/data/fetch';
 import { RecommendedMovieBanner } from '@/app/ui/components/Home/RecommendedMovieBanner';
 import { homeSections } from '@/app/lib/lists/homeSectionSlugs';
-import { Loading } from './LoadingSkeleton';
 /**
  * WeekMovieSection Component
  *
@@ -29,12 +27,13 @@ export async function WeekMovieSection(): Promise<JSX.Element> {
     // Extract relevant information from the fetched data
     const sectionInfo: HomeSectionAPI = data[0];
     const movieList: MovieAPI[] = sectionInfo?.movies;
-    if(movieList.length===0){
-      return (<></>);
+    if (movieList.length === 0) {
+      return <></>;
     }
     const firstMovie: MovieAPI = movieList[0];
     // Fetch details for the recommended movie
-    const { data: firstMovieData }: { data: MovieDetailsAPI[] } = await fetchMovieDetails(firstMovie?.slug);
+    const { data: firstMovieData }: { data: MovieDetailsAPI[] } =
+      await fetchMovieDetails(firstMovie?.slug);
     const firstMovieDetails: MovieDetailsAPI = firstMovieData[0];
     /**
      * Render the JSX for the WeekMovieSection component
@@ -42,10 +41,10 @@ export async function WeekMovieSection(): Promise<JSX.Element> {
     return (
       <>
         <RecommendedMovieBanner
-            titleBanner="Película de la semana"
-            background={sectionInfo?.background}
-            movieData={firstMovieDetails}
-          />
+          titleBanner="Película de la semana"
+          background={sectionInfo?.background}
+          movieData={firstMovieDetails}
+        />
       </>
     );
   } catch (error) {

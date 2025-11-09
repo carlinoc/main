@@ -70,7 +70,7 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
     .map((item: DirectorAPI) => `${item?.firstName} ${item?.lastName}`)
     .join(', ');
   const countryMovie = country[0]?.name;
-  
+
   const detailsMovieList = [
     {
       name: 'type',
@@ -190,8 +190,8 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
               {genreList}
             </span>
             <span className="inline-block w-full span-xs font-semibold">
-                País:
-                <span className="font-normal">{` ${countryMovie}`}</span>
+              País:
+              <span className="font-normal">{` ${countryMovie}`}</span>
             </span>
             <div className="flex items-center gap-2 flex-wrap w-full pb-4 border-b border-borderNeutral-50/50 span-sm text-textColorNeutral-300 font-medium">
               {detailsMovieList.map((item) => (

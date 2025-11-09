@@ -23,12 +23,13 @@ export async function ExclusiveSection(): Promise<JSX.Element> {
     // Extract relevant information from the fetched data
     const sectionInfo: HomeSectionAPI = data[0];
     const movieList: MovieAPI[] = sectionInfo?.movies;
-    if(movieList.length===0){
-      return (<></>)
+    if (movieList.length === 0) {
+      return <></>;
     }
     const firstMovie: MovieAPI = movieList[0];
     // Fetch details for the recommended movie
-    const { data: firstMovieData }: { data: MovieDetailsAPI[] } = await fetchMovieDetails(firstMovie?.slug);
+    const { data: firstMovieData }: { data: MovieDetailsAPI[] } =
+      await fetchMovieDetails(firstMovie?.slug);
     const firstMovieDetails: MovieDetailsAPI = firstMovieData[0];
     // Render the ExclusiveSectionCard component with the fetched movie data
     return (

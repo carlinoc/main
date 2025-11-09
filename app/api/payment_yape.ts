@@ -10,13 +10,19 @@ interface PaymentData {
   };
 }
 
+interface MercadoPagoError {
+  message?: string;
+  cause?: { description?: string }[];
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
   try {
     const data: PaymentData = req.body;
 
@@ -24,7 +30,7 @@ export default async function handler(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, 
+        Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({
         token: data.token,
@@ -42,9 +48,27 @@ export default async function handler(
     if (mpResponse.ok) {
       res.status(200).json(result);
     } else {
-      res.status(400).json({ error_message: result.message || 'Payment failed', result });
+      res.status(400).json({
+        error_message: result.message || 'Payment failed',
+        result,
+      });
     }
-  } catch (err: any) {
-    res.status(500).json({ error_message: err.message });
+  } catch (err: unknown) {
+    console.error('Error en el pago:', err);
+
+    let message = 'Error interno del servidor';
+
+    if (err instanceof Error) {
+      message = err.message;
+    } else if (
+      typeof err === 'object' &&
+      err &&
+      'cause' in err &&
+      Array.isArray((err as MercadoPagoError).cause)
+    ) {
+      message = (err as MercadoPagoError).cause?.[0]?.description || message;
+    }
+
+    res.status(500).json({ error_message: message });
   }
 }

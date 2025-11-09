@@ -14,7 +14,7 @@ export function Navbar(): JSX.Element {
   const { data: session } = useSession();
   const [openMyList, setOpenMyList] = useState(false);
   const [openTranslate, setOpenTranslate] = useState(false);
-  
+
   useEffect(() => {
     document.body.style.overflow = openMyList ? 'hidden' : 'visible';
     return () => {
@@ -27,8 +27,17 @@ export function Navbar(): JSX.Element {
       name: 'Inicio',
       href: routesPaths?.home,
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24"
-          strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={20}
+          height={20}
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
           <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
@@ -40,8 +49,17 @@ export function Navbar(): JSX.Element {
       name: 'contenido',
       href: routesPaths?.content,
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24"
-          strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={20}
+          height={20}
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
           <path d="M8 4l0 16" />
@@ -60,9 +78,19 @@ export function Navbar(): JSX.Element {
     <nav className="relative flex justify-center items-center w-full h-16 lg:h-[4.5rem] border-b border-borderNeutral-50/10 bg-bgPrimaryDark/50">
       <div className="relative flex justify-between items-center w-full h-full p-4 backdrop-blur-md">
         {/* Logo */}
-        <Link href={routesPaths?.home} className="flex justify-center items-center gap-2 h-full">
+        <Link
+          href={routesPaths?.home}
+          className="flex justify-center items-center gap-2 h-full"
+        >
           <figure className="relative w-28 md:w-32 h-full">
-            <Image fill sizes="100%" src={cinergiaLogo} alt="Logo Cinergia" priority className="w-full h-full" />
+            <Image
+              fill
+              sizes="100%"
+              src={cinergiaLogo}
+              alt="Logo Cinergia"
+              priority
+              className="w-full h-full"
+            />
           </figure>
         </Link>
 
@@ -110,13 +138,12 @@ export function Navbar(): JSX.Element {
             myListState={openMyList}
           />
         </div>
-
       </div>
 
       {/* Google Translate Modal */}
-      <GoogleTranslate 
-        isOpen={openTranslate} 
-        onClose={() => setOpenTranslate(false)} 
+      <GoogleTranslate
+        isOpen={openTranslate}
+        onClose={() => setOpenTranslate(false)}
       />
 
       {/* MyList Preview */}
@@ -127,7 +154,10 @@ export function Navbar(): JSX.Element {
             !openMyList ? 'translate-x-full' : ''
           }`}
         >
-          <MyListPreview handleMyListState={setOpenMyList} myListState={openMyList} />
+          <MyListPreview
+            handleMyListState={setOpenMyList}
+            myListState={openMyList}
+          />
         </section>
       )}
     </nav>

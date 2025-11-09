@@ -29,8 +29,8 @@ export async function ShortFilmsBannerSection(): Promise<JSX.Element> {
     // Extract relevant information from the fetched data
     const sectionInfo: HomeSectionAPI = data[0];
     const movieListReverse: MovieAPI[] = sectionInfo?.movies.reverse();
-    if(movieListReverse.length===0){
-      return (<></>);
+    if (movieListReverse.length === 0) {
+      return <></>;
     }
     // Retrieve details of the first movie in the list
     const firstMovie: MovieAPI = movieListReverse[0];

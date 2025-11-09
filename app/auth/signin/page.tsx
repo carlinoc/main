@@ -37,11 +37,14 @@ export default function SignInPage(): JSX.Element {
   const router = useRouter();
 
   const { countryCode } = useCountry();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       if (session) {
-        await validateUser({ user: session.user as UserDataAPI, countryId: countryCode });
+        await validateUser({
+          user: session.user as UserDataAPI,
+          countryId: countryCode,
+        });
         router.back();
       }
     };
@@ -63,13 +66,15 @@ export default function SignInPage(): JSX.Element {
     <div className="z-[60] fixed inset-0 w-screen lg:h-screen bg-bgPrimaryDark">
       <div className="overflow-y-auto w-full h-full">
         <div className="w-full flex flex-col items-center space-y-4 lg:flex-row lg:justify-center lg:space-y-0">
-          
           {/* LEFT SECTION - New Design */}
           <section className="relative w-full lg:w-3/5 aspect-square lg:h-screen border-borderNeutral-700 md:border-r bg-black overflow-hidden">
             {/* Decorative elements */}
             <div className="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64">
               <svg viewBox="0 0 200 200" className="w-full h-full opacity-80">
-                <path fill="#3B82F6" d="M0,100 Q50,50 100,100 T200,100 L200,200 L0,200 Z" />
+                <path
+                  fill="#3B82F6"
+                  d="M0,100 Q50,50 100,100 T200,100 L200,200 L0,200 Z"
+                />
               </svg>
             </div>
             <div className="absolute top-10 right-10 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40">
@@ -100,10 +105,13 @@ export default function SignInPage(): JSX.Element {
                     </h3>
                     <div className="space-y-3 text-neutral-300 text-sm md:text-base">
                       <p className="leading-relaxed">
-                        Tienes un mes para ver cada uno de tus contenidos y desde el momento que inicias la reproducción tienes una semana para verlo nuevamente.
+                        Tienes un mes para ver cada uno de tus contenidos y
+                        desde el momento que inicias la reproducción tienes una
+                        semana para verlo nuevamente.
                       </p>
                       <p className="leading-relaxed">
-                        Tendrás acceso a todo contenido que adquieras desde donde ingreses con tu cuenta.
+                        Tendrás acceso a todo contenido que adquieras desde
+                        donde ingreses con tu cuenta.
                       </p>
                     </div>
                   </div>
@@ -114,40 +122,66 @@ export default function SignInPage(): JSX.Element {
                       <span className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-lg md:text-xl">
                         1
                       </span>
-                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">Accede a tu cuenta</p>
+                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">
+                        Accede a tu cuenta
+                      </p>
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <span className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-lg md:text-xl">
                         2
                       </span>
-                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">Ingresa a tu billetera electrónica</p>
+                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">
+                        Ingresa a tu billetera electrónica
+                      </p>
                     </div>
-                    
+
                     <div className="flex items-start gap-3">
                       <span className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-lg md:text-xl">
                         3
                       </span>
-                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">¡Realiza una donacion y listo!</p>
+                      <p className="text-white text-sm md:text-base lg:text-lg pt-1 md:pt-2">
+                        ¡Realiza una donacion y listo!
+                      </p>
                     </div>
                   </div>
 
                   {/* Payment Icons */}
                   <div className="flex items-center gap-3 pt-2">
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center">
-                      <img src="/images/yapeseeklogo.png" alt="Yape" className="w-8 md:w-16"/>
+                      <img
+                        src="/images/yapeseeklogo.png"
+                        alt="Yape"
+                        className="w-8 md:w-16"
+                      />
                     </div>
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center">
-                      <img src="/images/visalogo.png" alt="Visa" className="w-10 md:w-16"/>
+                      <img
+                        src="/images/visalogo.png"
+                        alt="Visa"
+                        className="w-10 md:w-16"
+                      />
                     </div>
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center">
-                      <img src="/images/mastercardlogo.png" alt="Mastercard" className="w-10 md:w-16"/>
+                      <img
+                        src="/images/mastercardlogo.png"
+                        alt="Mastercard"
+                        className="w-10 md:w-16"
+                      />
                     </div>
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center">
-                      <img src="/images/amexlogo.png" alt="Amex" className="w-10 md:w-16"/>
+                      <img
+                        src="/images/amexlogo.png"
+                        alt="Amex"
+                        className="w-10 md:w-16"
+                      />
                     </div>
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center">
-                      <img src="/images/dinerslogo.png" alt="Dinners" className="w-10 md:w-16"/>
+                      <img
+                        src="/images/dinerslogo.png"
+                        alt="Dinners"
+                        className="w-10 md:w-16"
+                      />
                     </div>
                   </div>
                 </div>
@@ -161,8 +195,8 @@ export default function SignInPage(): JSX.Element {
                         {/* QR Code Placeholder */}
                         <div className="w-full aspect-square bg-white rounded-xl md:rounded-2xl flex items-center justify-center">
                           <div className="w-4/5 h-4/5 bg-black/10 rounded-lg flex items-center justify-center">
-                            <svg 
-                              viewBox="0 0 100 100" 
+                            <svg
+                              viewBox="0 0 100 100"
                               className="w-full h-full"
                               fill="currentColor"
                             >

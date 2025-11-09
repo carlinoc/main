@@ -33,9 +33,7 @@ export default function RootLayout({
               {/* Header with navigation bar */}
               <Header />
               {/* Main content */}
-              <main id="main-content">
-                {children}
-              </main>
+              <main id="main-content">{children}</main>
 
               {/* Footer component */}
               <Footer />

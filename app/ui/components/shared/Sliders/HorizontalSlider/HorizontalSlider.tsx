@@ -6,7 +6,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './sliderStyles.css';
 import { Pagination, Navigation } from 'swiper/modules';
-import { MovieCard } from '@/app/ui/components/shared/Cards/MovieCard';
 import { MovieCardAPI } from '@/app/ui/components/shared/Cards/MovieCardAPI';
 import {
   ButtonStyleType,

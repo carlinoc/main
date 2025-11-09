@@ -66,7 +66,7 @@ export function VideoPlayer(props: VideoPlayerProps & { movieId?: number }) {
       <iframe
         id="videoPlayer"
         className={`w-full h-full ${loading ? 'hidden' : ''}`}
-        {...iframeProps} 
+        {...iframeProps}
       />
     </div>
   );

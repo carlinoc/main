@@ -18,6 +18,23 @@ const languages = [
   { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
 ];
 
+// ✅ Tipado correcto del objeto global de Google Translate
+declare global {
+  interface Window {
+    google?: {
+      translate?: {
+        TranslateElement: {
+          new (options: Record<string, unknown>, id: string): void;
+          InlineLayout?: {
+            SIMPLE: unknown;
+          };
+        };
+      };
+    };
+    googleTranslateElementInit?: () => void;
+  }
+}
+
 export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
   const [selectedLang, setSelectedLang] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
@@ -28,58 +45,60 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
       const script = document.createElement('script');
       script.id = 'google-translate-script';
       script.type = 'text/javascript';
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.src =
+        '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       document.body.appendChild(script);
     }
 
     // Definir función de inicialización global
-    (window as any).googleTranslateElementInit = function() {
-      new (window as any).google.translate.TranslateElement(
-        {
-          pageLanguage: 'es',
-          includedLanguages: 'en,pt,fr,de,it,ja,ko,zh-CN',
-          layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        },
-        'google_translate_element'
-      );
+    window.googleTranslateElementInit = function () {
+      const TranslateElement = window.google?.translate?.TranslateElement;
+      if (TranslateElement) {
+        new TranslateElement(
+          {
+            pageLanguage: 'es',
+            includedLanguages: 'en,pt,fr,de,it,ja,ko,zh-CN',
+            layout: TranslateElement.InlineLayout?.SIMPLE,
+            autoDisplay: false,
+          },
+          'google_translate_element',
+        );
+      }
     };
 
-    // Si el script ya está cargado, inicializar
-    if ((window as any).google?.translate) {
-      (window as any).googleTranslateElementInit();
+    // Si el script ya está cargado, inicializar directamente
+    if (window.google?.translate) {
+      window.googleTranslateElementInit?.();
     }
   }, []);
 
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-    return null;
-  };
+  // const getCookie = (name: string): string | null => {
+  //   const value = `; ${document.cookie}`;
+  //   const parts = value.split(`; ${name}=`);
+  //   if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  //   return null;
+  // };
 
-  const setCookie = (name: string, value: string, days: number) => {
+  const setCookie = (name: string, value: string, days: number): void => {
     const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
   };
 
-  const changeLanguage = (langCode: string) => {
+  const changeLanguage = (langCode: string): void => {
     setIsTranslating(true);
     setSelectedLang(langCode);
 
     // Establecer la cookie de Google Translate
-    const domain = window.location.hostname;
     setCookie('googtrans', `/es/${langCode || 'es'}`, 365);
-    setCookie('googtrans', `/es/${langCode || 'es'}`, 365);
-    
+
     // Forzar actualización
     setTimeout(() => {
       window.location.reload();
     }, 300);
   };
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     if (e.target === e.currentTarget && !isTranslating) {
       onClose();
     }
@@ -99,7 +118,9 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
       <div className="fixed top-20 right-4 z-[9999] bg-bgPrimaryDark border border-borderNeutral-50/20 rounded-lg shadow-2xl w-80 max-w-[calc(100vw-2rem)]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-borderNeutral-50/10">
-          <h3 className="text-lg font-semibold text-white">Seleccionar idioma</h3>
+          <h3 className="text-lg font-semibold text-white">
+            Seleccionar idioma
+          </h3>
           <button
             onClick={onClose}
             disabled={isTranslating}
@@ -128,7 +149,9 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
           {isTranslating ? (
             <div className="flex flex-col items-center justify-center py-8 gap-3">
               <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-white"></div>
-              <p className="text-neutral-300 text-sm">Aplicando traducción...</p>
+              <p className="text-neutral-300 text-sm">
+                Aplicando traducción...
+              </p>
             </div>
           ) : (
             <>
@@ -144,7 +167,9 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
                     }`}
                   >
                     <span className="text-2xl">{lang.flag}</span>
-                    <span className="text-white font-medium text-left flex-1">{lang.name}</span>
+                    <span className="text-white font-medium text-left flex-1">
+                      {lang.name}
+                    </span>
                     {selectedLang === lang.code && (
                       <svg
                         className="flex-shrink-0"
@@ -178,32 +203,20 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
       {/* Widget oculto */}
       <div id="google_translate_element" style={{ display: 'none' }}></div>
 
+      {/* Estilos globales para ocultar banner de Google Translate */}
       <style jsx global>{`
-        /* Ocultar banner de Google Translate */
         .goog-te-banner-frame.skiptranslate {
           display: none !important;
         }
-        
         body {
           top: 0px !important;
         }
-
-        .skiptranslate {
-          display: none !important;
-        }
-
-        body > .skiptranslate {
-          display: none !important;
-        }
-
-        .goog-te-balloon-frame {
-          display: none !important;
-        }
-
+        .skiptranslate,
+        body > .skiptranslate,
+        .goog-te-balloon-frame,
         #goog-gt-tt {
           display: none !important;
         }
-
         .goog-text-highlight {
           background-color: transparent !important;
           box-shadow: none !important;
@@ -214,17 +227,14 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-track {
           background: rgba(255, 255, 255, 0.05);
           border-radius: 3px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: rgba(255, 255, 255, 0.2);
           border-radius: 3px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(255, 255, 255, 0.3);
         }

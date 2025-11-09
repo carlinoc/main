@@ -6,9 +6,12 @@ import PaymentModal from '@/app/ui/components/pay/PaymentModal';
 import { fetchUserData } from '@/app/lib/data/fetch';
 import { useSession } from 'next-auth/react';
 import { WrapperPlayButtonProps } from '../HeroCard.model';
-import {useCountry} from '@/app/context/CountryContext';
+import { useCountry } from '@/app/context/CountryContext';
 
-export default function WrapperPlayButton({ movieData, handlePaid }: WrapperPlayButtonProps): JSX.Element {
+export default function WrapperPlayButton({
+  movieData,
+  handlePaid,
+}: WrapperPlayButtonProps): JSX.Element {
   const { data: session, status } = useSession();
   const userEmail = session?.user?.email;
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
@@ -16,10 +19,10 @@ export default function WrapperPlayButton({ movieData, handlePaid }: WrapperPlay
   const [userMovieList, setUserMovieList] = useState<MovieUserList[]>();
   const [showYape, setShowYape] = useState(false);
   const [showCardPayment, setShowCardPayment] = useState(false);
-  
+
   // Usar el contexto de país
   const { countryCode, isLoading: isDetectingCountry } = useCountry();
-  
+
   // Loading state for fetching data
   const [isLoading, setIsLoading] = useState(false);
   // State to store user information
@@ -39,7 +42,7 @@ export default function WrapperPlayButton({ movieData, handlePaid }: WrapperPlay
     let didFetch = false;
 
     const fetchMovieList = async () => {
-      if (status !== "authenticated" || !session?.user?.email) return;
+      if (status !== 'authenticated' || !session?.user?.email) return;
       if (didFetch || !userEmail) return;
       didFetch = true;
 
@@ -79,7 +82,9 @@ export default function WrapperPlayButton({ movieData, handlePaid }: WrapperPlay
       setShowYape(true);
     } else {
       // Usuario internacional -> Mostrar pago con tarjeta
-      console.log(`🌍 Usuario internacional (${countryCode}), mostrando pago con tarjeta`);
+      console.log(
+        `🌍 Usuario internacional (${countryCode}), mostrando pago con tarjeta`,
+      );
       setShowCardPayment(true);
     }
   };
