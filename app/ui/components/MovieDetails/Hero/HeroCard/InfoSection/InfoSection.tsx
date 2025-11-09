@@ -56,14 +56,6 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
     return setDate(year);
   }, [release_year]);
 
-  // const productionCompanies = extractValuesByKey({
-  //   array: production_companies,
-  //   key: 'name',
-  // });
-  // const productionCountries = extractValuesByKey({
-  //   array: production_countries,
-  //   key: 'name',
-  // });
   const genreList = genres.join(', ');
   const languagesList = extractValuesByKey({ array: languages, key: 'name' });
   const directorList = director
@@ -244,7 +236,7 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
         >
           <VideoPlayer
             src={`https://www.youtube.com/embed/${trailer}`}
-            title="YouTube video player"
+            title="Video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
