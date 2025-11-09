@@ -18,7 +18,6 @@ const languages = [
   { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
 ];
 
-// ✅ Tipado correcto del objeto global de Google Translate
 declare global {
   interface Window {
     google?: {
@@ -40,6 +39,15 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
   const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
+    // Detectar el idioma actual desde las cookies
+    const currentLang = getCookie('googtrans');
+    if (currentLang) {
+      const match = currentLang.match(/\/es\/([a-z-]+)/i);
+      if (match && match[1] !== 'es') {
+        setSelectedLang(match[1]);
+      }
+    }
+
     // Agregar el script solo una vez
     if (!document.getElementById('google-translate-script')) {
       const script = document.createElement('script');
@@ -72,30 +80,70 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
     }
   }, []);
 
-  // const getCookie = (name: string): string | null => {
-  //   const value = `; ${document.cookie}`;
-  //   const parts = value.split(`; ${name}=`);
-  //   if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-  //   return null;
-  // };
+  const getCookie = (name: string): string | null => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+  };
+
+  const deleteCookie = (name: string): void => {
+    // Eliminar para el dominio actual
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+
+    // Eliminar para el dominio raíz (importante en producción)
+    const domain = window.location.hostname;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+
+    // Eliminar para subdominios
+    const rootDomain = domain.split('.').slice(-2).join('.');
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${rootDomain};`;
+  };
 
   const setCookie = (name: string, value: string, days: number): void => {
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    const expires = `expires=${date.toUTCString()}`;
+
+    // Establecer para el dominio actual
+    document.cookie = `${name}=${value};${expires};path=/`;
+
+    // Establecer también para el dominio raíz (importante en producción)
+    const domain = window.location.hostname;
+    document.cookie = `${name}=${value};${expires};path=/;domain=${domain}`;
   };
 
   const changeLanguage = (langCode: string): void => {
     setIsTranslating(true);
     setSelectedLang(langCode);
 
-    // Establecer la cookie de Google Translate
-    setCookie('googtrans', `/es/${langCode || 'es'}`, 365);
+    // Si es español (original), eliminar todas las cookies de traducción
+    if (!langCode || langCode === 'es') {
+      deleteCookie('googtrans');
+      deleteCookie('googtrans');
 
-    // Forzar actualización
-    setTimeout(() => {
-      window.location.reload();
-    }, 300);
+      // Eliminar también el frame de Google Translate si existe
+      const gtFrame = document.querySelector('.goog-te-banner-frame');
+      if (gtFrame) {
+        gtFrame.remove();
+      }
+
+      // Limpiar atributos del HTML que Google Translate agrega
+      const htmlElement = document.documentElement;
+      htmlElement.removeAttribute('class');
+      htmlElement.removeAttribute('style');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    } else {
+      // Para otros idiomas, establecer la cookie normalmente
+      setCookie('googtrans', `/es/${langCode}`, 365);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
   };
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -150,7 +198,9 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
             <div className="flex flex-col items-center justify-center py-8 gap-3">
               <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-white"></div>
               <p className="text-neutral-300 text-sm">
-                Aplicando traducción...
+                {!selectedLang
+                  ? 'Restaurando idioma original...'
+                  : 'Aplicando traducción...'}
               </p>
             </div>
           ) : (
@@ -192,7 +242,9 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
 
               <div className="mt-4 pt-4 border-t border-borderNeutral-50/10">
                 <p className="text-neutral-400 text-xs text-center">
-                  Haz clic en un idioma para traducir toda la página
+                  {selectedLang
+                    ? 'Selecciona "Español (Original)" para volver al idioma original'
+                    : 'Haz clic en un idioma para traducir toda la página'}
                 </p>
               </div>
             </>
