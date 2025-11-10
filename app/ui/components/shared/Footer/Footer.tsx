@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import cinergiaLogo from '@/public/cinergiaLogoWeb2.svg';
+import Link from 'next/link';
 /**
  * Footer Component
  *
@@ -33,12 +34,13 @@ export function Footer(): JSX.Element {
               <span className="span-base text-textColorNeutral-400 w-full">
                 © 2025 Cinergia, Todos los derechos reservados.
               </span>
-              <a
+              <Link href="/terminos-y-condiciones">Términos y Condiciones</Link>
+              {/* <a
                 href=""
                 className="span-base text-neutral-50 hover:text-primary-500 w-full"
               >
                 Términos y Condiciones
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

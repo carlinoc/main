@@ -38,15 +38,37 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
   const [selectedLang, setSelectedLang] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
 
-  useEffect(() => {
-    // Detectar el idioma actual desde las cookies
+  // Función para detectar el idioma actual
+  const detectCurrentLanguage = (): string => {
     const currentLang = getCookie('googtrans');
     if (currentLang) {
-      const match = currentLang.match(/\/es\/([a-z-]+)/i);
-      if (match && match[1] !== 'es') {
-        setSelectedLang(match[1]);
+      const match = currentLang.match(/\/[a-z-]+\/([a-z-]+)/i);
+      if (match && match[1] && match[1] !== 'es') {
+        return match[1];
       }
     }
+
+    // También verificar en el HTML si Google Translate ya tradujo
+    const htmlLang = document.documentElement.getAttribute('lang');
+    if (htmlLang && htmlLang !== 'es' && htmlLang !== 'en') {
+      return htmlLang;
+    }
+
+    return '';
+  };
+
+  useEffect(() => {
+    // Detectar el idioma cada vez que se abre el modal
+    if (isOpen) {
+      const detectedLang = detectCurrentLanguage();
+      setSelectedLang(detectedLang);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    // Detectar el idioma actual al montar el componente
+    const detectedLang = detectCurrentLanguage();
+    setSelectedLang(detectedLang);
 
     // Agregar el script solo una vez
     if (!document.getElementById('google-translate-script')) {
@@ -216,7 +238,7 @@ export function GoogleTranslate({ isOpen, onClose }: GoogleTranslateProps) {
                         : 'bg-white/5 border border-transparent hover:bg-white/10 hover:border-white/10'
                     }`}
                   >
-                    <span className="text-2xl">{lang.flag}</span>
+                    <span className="text-lg">{lang.flag}</span>
                     <span className="text-white font-medium text-left flex-1">
                       {lang.name}
                     </span>
