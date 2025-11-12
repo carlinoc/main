@@ -71,6 +71,9 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
   };
 
   const COUNTRY_DEFAULT = process.env.NEXT_PUBLIC_COUNTRY_DEFAULT;
+  const backgroundImage = image2?.startsWith('http')
+    ? image2
+    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
 
   // Usar el contexto de país
   const { countryCode } = useCountry();
@@ -80,7 +83,7 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
       <section
         className="relative overflow-hidden w-full min-h-screen bg-cover bg-center"
         style={{
-          backgroundImage: `url('${CDN_IMAGES_BASE_URL}${image2}')`,
+          backgroundImage: `url('${backgroundImage}')`,
         }}
       >
         <AnimatePresence>
