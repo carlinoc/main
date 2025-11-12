@@ -65,7 +65,8 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
               <span className="before:content-['•'] before:mr-2">{date}</span>
             </div>
           </div>
-          <p className="paragraph-lg line-clamp-5 lg:line-clamp-none font-normal text-textColorNeutral-50">
+          <p className="paragraph-lg line-clamp-3 font-normal text-textColorNeutral-50">
+            {/* Descripcion de la pelicula */}
             {description}
           </p>
           <Link

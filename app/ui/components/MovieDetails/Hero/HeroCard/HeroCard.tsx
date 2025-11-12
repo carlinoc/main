@@ -17,7 +17,7 @@ const paymentTypeConfig: Record<string, ConfigPayment> = {
   },
   DO: {
     bg: 'bg-greenBrushStroke2',
-    title: '¡Disfrútala y apoya nuestro contenido con una donación!',
+    title: '¡Disfrútala y apoya nuestro contenido con una donación desde!',
     text: '',
     subtitle: '',
   },
@@ -94,7 +94,7 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
               className={`absolute top-16 lg:top-[4.5rem] -left-5 w-full md:w-fit max-w-xl ${bg} bg-contain bg-center bg-no-repeat`}
             >
               {/* Mensaje de pago */}
-              <div className="flex flex-col w-full pl-12 md:pr-20 py-12">
+              <div className="flex flex-col w-full pl-12 md:pr-8 py-12">
                 <span className="span-xl md:text-2xl lg:text-3xl text-textColorNeutral-50 font-semibold">
                   {title}
                 </span>

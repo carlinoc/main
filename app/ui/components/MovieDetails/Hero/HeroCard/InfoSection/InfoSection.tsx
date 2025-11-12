@@ -11,28 +11,7 @@ import { VideoPlayer } from '@/app/ui/components/shared/VideoPlayer';
 import { convertMinutesToHours } from '@/app/lib/utils/convertMinutesToHours';
 import { extractValuesByKey } from '@/app/lib/utils/extractValuesByKey';
 import { InfoSectionProps } from '../HeroCard.model';
-/**
- * InfoSection Component
- *
- * The InfoSection component displays detailed information about a movie, including title,
- * production details, genres, release date, runtime, spoken languages, and a button to
- * view the movie trailer.
- *
- * @component
- * @param {InfoSectionProps} props - Props for configuring the InfoSection component.
- * @param {MovieType} props.movieData - Movie data used to populate the information.
- * @param {VideoList} props.videos - List of videos related to the movie.
- * @returns {JSX.Element} - JSX element representing the InfoSection component.
- * @example
- * // Example usage of InfoSection component in a React component
- * const MovieDetailsPage = () => {
- *   const movieData = //...fetch movie data from API or other source
- *   const videos = //...fetch video data from API or other source
- *   return (
- *     <InfoSection movieData={movieData} videos={videos} />
- *   );
- * };
- */
+
 export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
   const {
     name,
@@ -50,6 +29,10 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [date, setDate] = useState<number>(0);
+
+  // 🔹 Estados para expandir texto con animación
+  const [showFullSynopsis, setShowFullSynopsis] = useState(false);
+  const [showFullWhySee, setShowFullWhySee] = useState(false);
 
   useEffect(() => {
     const year = new Date(release_year).getFullYear();
@@ -197,6 +180,7 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
               ))}
             </div>
           </article>
+
           {trailer ? (
             <article className="flex flex-col md:flex-row gap-4 w-full">
               <button
@@ -209,22 +193,70 @@ export function InfoSection({ movieData }: InfoSectionProps): JSX.Element {
             </article>
           ) : null}
         </section>
+
         <section className="hidden col-span-1 lg:col-span-2 self-end md:grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* SINOPSIS */}
           <article className="md:col-span-1 lg:col-span-1 w-full">
             <span className="span-base font-semibold text-textColorNeutral-50">
               Sinopsis
             </span>
-            <p className="paragraph-sm line-clamp-[7] font-normal text-textColorNeutral-100">
-              {description || ''}
-            </p>
+
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                showFullSynopsis ? 'max-h-[1000px]' : 'max-h-[140px]'
+              }`}
+            >
+              <p className="paragraph-sm font-normal text-textColorNeutral-100">
+                {description || ''}
+              </p>
+            </div>
+
+            {description && description.length > 420 && (
+              <div className="flex justify-end mt-2">
+                <button
+                  onClick={() => setShowFullSynopsis(!showFullSynopsis)}
+                  className={`px-3 py-1 border rounded-lg text-xs font-medium transition-all duration-200 ${
+                    showFullSynopsis
+                      ? 'border-secondary-600 text-secondary-400 hover:bg-secondary-600 hover:text-white'
+                      : 'border-secondary-600 text-secondary-500 hover:bg-secondary-600 hover:text-white'
+                  }`}
+                >
+                  {showFullSynopsis ? 'Ver menos' : 'Ver más'}
+                </button>
+              </div>
+            )}
           </article>
+
+          {/* POR QUÉ VERLA */}
           <article className="md:col-span-1 lg:col-span-1 w-full">
             <span className="span-base font-semibold text-textColorNeutral-50">
               Por qué verla
             </span>
-            <p className="paragraph-sm line-clamp-[7] font-normal text-textColorNeutral-100">
-              {whySee || ''}
-            </p>
+
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                showFullWhySee ? 'max-h-[1000px]' : 'max-h-[140px]'
+              }`}
+            >
+              <p className="paragraph-sm font-normal text-textColorNeutral-100">
+                {whySee || ''}
+              </p>
+            </div>
+
+            {whySee && whySee.length > 420 && (
+              <div className="flex justify-end mt-2">
+                <button
+                  onClick={() => setShowFullWhySee(!showFullWhySee)}
+                  className={`px-3 py-1 border rounded-lg text-xs font-medium transition-all duration-200 ${
+                    showFullWhySee
+                      ? 'border-secondary-600 text-secondary-400 hover:bg-secondary-600 hover:text-white'
+                      : 'border-secondary-600 text-secondary-500 hover:bg-secondary-600 hover:text-white'
+                  }`}
+                >
+                  {showFullWhySee ? 'Ver menos' : 'Ver más'}
+                </button>
+              </div>
+            )}
           </article>
         </section>
       </section>
