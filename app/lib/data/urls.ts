@@ -2,7 +2,7 @@
  * Base URL for CDN images.
  * @constant {string} CDN_IMAGES_BASE_URL
  */
-export const CDN_IMAGES_BASE_URL = 'https://cdn.cinergia.lat/';
+export const CDN_IMAGES_BASE_URL = process.env.NEXT_PUBLIC_CDN_URL;
 
 /**
  * URL to fetch the list of movies.

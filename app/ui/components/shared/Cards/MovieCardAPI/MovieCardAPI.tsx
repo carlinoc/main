@@ -4,7 +4,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MovieCardAPIProps } from './MovieCardAPI.model';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { routesPaths } from '@/app/routes/routes';
 /**
  * MovieCardAPI Component
@@ -20,10 +19,6 @@ import { routesPaths } from '@/app/routes/routes';
 export function MovieCardAPI({ movieData }: MovieCardAPIProps): JSX.Element {
   // Extracting movie data properties
   const { name, slug, releaseYear, image1, urlId } = movieData;
-  //console.log(movieData);
-  // URL for the movie poster image
-  const pathBackground = urlId == null ? '' : CDN_IMAGES_BASE_URL;
-  const backgroundImage = `${pathBackground}${image1}`;
 
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
@@ -40,7 +35,7 @@ export function MovieCardAPI({ movieData }: MovieCardAPIProps): JSX.Element {
             <Image
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1080px) 100vw, 1536px"
-              src={backgroundImage}
+              src={image1}
               alt={name || 'Movie Card'}
               placeholder="blur"
               loading="lazy"

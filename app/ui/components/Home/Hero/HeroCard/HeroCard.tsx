@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { convertMinutesToHours } from '@/app/lib/utils/convertMinutesToHours';
 import { HeroCardProps } from './HeroCard.model';
 import { routesPaths } from '@/app/routes/routes';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 /**
  * HeroCard Component
  *
@@ -32,9 +31,6 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
   } = movieData;
   const [date, setDate] = useState<number>(0);
 
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
-
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
@@ -48,7 +44,7 @@ export function HeroCard({ movieData }: HeroCardProps): JSX.Element {
     <section
       className="overflow-hidden relative w-full min-h-[100vh] bg-cover bg-center "
       style={{
-        backgroundImage: `url('${backgroundImage}')`,
+        backgroundImage: `url('${image2}')`,
       }}
     >
       <div className="w-full min-h-[100vh] py-16 lg:py-[4.5rem] flex justify-center items-end bg-gradient-to-t from-bgPrimaryDark via-bgPrimaryDark/50 to-transparent">

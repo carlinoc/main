@@ -23,21 +23,24 @@ export function ExclusiveSectionCard({
   // Destructure movieData to extract relevant information
   const { name, description, slug, image2, agerates, urlId } = movieData;
   // Construct the background image URL
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
 
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundImageUrl = background
-    ? `url('${CDN_IMAGES_BASE_URL}${background}')`
-    : `url('${backgroundImage}')`;
+  const backgroundMovie = image2?.startsWith('http')
+    ? image2
+    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
+
+  const backgroundImage = background
+    ? `${CDN_IMAGES_BASE_URL}${background}`
+    : `${backgroundMovie}`;
+
   // Render the JSX for the ExclusiveSectionCard component
   return (
     <section
       className="relative flex items-center justify-center w-full min-h-[100vh] bg-cover bg-center "
       style={{
-        backgroundImage: backgroundImageUrl,
+        backgroundImage: `url('${backgroundImage}')`,
       }}
     >
       <div className="z-10 absolute -top-10 -left-5 py-12 pr-24 bg-greenBrushStroke5 bg-contain bg-center bg-no-repeat">

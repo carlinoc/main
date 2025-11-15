@@ -1,6 +1,6 @@
 'use client';
 // Import React and React-related libraries
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Import Next.js libraries and components
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -35,8 +35,23 @@ export default function SignInPage(): JSX.Element {
   // Use next-auth/react hook to get session information
   const { data: session, status } = useSession();
   const router = useRouter();
-
   const { countryCode } = useCountry();
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  // Leer desde localStorage cuando cargue
+  useEffect(() => {
+    const stored = localStorage.getItem('cinergia_accept_terms');
+    if (stored === 'true') {
+      setAcceptedTerms(true);
+    }
+  }, []);
+
+  // Guardar cuando cambie
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.checked;
+    setAcceptedTerms(value);
+    localStorage.setItem('cinergia_accept_terms', value.toString());
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +68,7 @@ export default function SignInPage(): JSX.Element {
 
   // Function to handle Google sign-in
   const handleSigninGoogle = () => {
+    if (!acceptedTerms) return;
     popupCenter(routesPaths?.authGoogle, 'Iniciar sesión');
   };
 
@@ -105,13 +121,14 @@ export default function SignInPage(): JSX.Element {
                     </h3>
                     <div className="space-y-3 text-neutral-300 text-sm md:text-base">
                       <p className="leading-relaxed">
-                        Tienes un mes para ver cada uno de tus contenidos y
-                        desde el momento que inicias la reproducción tienes una
-                        semana para verlo nuevamente.
+                        Tienes un mes para ver cada uno de tus contenidos,
+                        cuando le das “play” se activan 72 horas para
+                        disfrutarla con calma. Si se te pasa el tiempo, la peli
+                        desaparece de tu lista.
                       </p>
                       <p className="leading-relaxed">
-                        Tendrás acceso a todo contenido que adquieras desde
-                        donde ingreses con tu cuenta.
+                        Solo puedes verla dentro de la plataforma. Y si expira,
+                        ya no se puede volver a acceder ni pedir reembolso.
                       </p>
                     </div>
                   </div>
@@ -249,9 +266,35 @@ export default function SignInPage(): JSX.Element {
                 </h1>
               </section>
               <form className="w-full pt-10">
+                {/* Checkbox con link */}
+                <div className="flex items-start gap-3 mb-6">
+                  <input
+                    type="checkbox"
+                    checked={acceptedTerms}
+                    onChange={handleCheckbox}
+                    className="w-5 h-5 cursor-pointer accent-teal-400"
+                  />
+
+                  <label className="text-white text-sm leading-tight cursor-pointer">
+                    Aceptar los{' '}
+                    <a
+                      href="/terminos-y-condiciones"
+                      className="text-teal-400 underline hover:text-teal-300"
+                      target="_blank"
+                    >
+                      Términos y condiciones
+                    </a>{' '}
+                    para continuar
+                  </label>
+                </div>
+
+                {/* Botón Google */}
                 <button
                   type="button"
-                  className="button-primary padding-button w-full"
+                  disabled={!acceptedTerms}
+                  className={`button-primary padding-button w-full ${
+                    !acceptedTerms ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                   onClick={handleSigninGoogle}
                 >
                   <svg

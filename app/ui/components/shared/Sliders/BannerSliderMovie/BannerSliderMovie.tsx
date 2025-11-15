@@ -33,15 +33,15 @@ export function BannerSliderMovie({
   // State to manage loading status
   const [loading, setLoading] = useState(true);
   // Construct the background image URL
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
 
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundImageUrl = background
-    ? `url('${CDN_IMAGES_BASE_URL}${background}')`
-    : `url('${backgroundImage}')`;
+  const backgroundMovie = image2?.startsWith('http')
+    ? image2
+    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
+
+  const backgroundImage = background ? `${background}` : `${backgroundMovie}`;
 
   const extractValuesAgregates = extractValuesByKey({
     array: agerates,
@@ -62,7 +62,7 @@ export function BannerSliderMovie({
     <section
       className="flex items-center justify-center w-full min-h-[100vh] bg-cover bg-center "
       style={{
-        backgroundImage: backgroundImageUrl,
+        backgroundImage: `url('${backgroundImage}')`,
       }}
     >
       <div className="relative flex flex-col items-center justify-center w-full min-h-[100vh] py-14 lg:py-16 bg-gradient-to-br from-bgPrimaryDark via-bgPrimaryDark/40 to-transparent after:absolute after:inset-x-0 after:top-0 after:w-full after:h-4 after:bg-gradient-to-t after:from-transparent after:to-bgPrimaryDark">

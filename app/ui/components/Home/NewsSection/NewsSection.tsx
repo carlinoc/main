@@ -5,7 +5,7 @@ import { HorizontalMovieListSecondary } from '@/app/ui/components/shared/Horizon
 import Figure2 from '@/app/ui/components/shared/assets/Figure2';
 import Figure3 from '@/app/ui/components/shared/assets/Figure3';
 import { homeSections } from '@/app/lib/lists/homeSectionSlugs';
-import walletImage from '@/public/images/walletImage.png';
+import walletImage from '@/public/images/bannerdePago.png';
 /**
  * NewsSection Component
  *

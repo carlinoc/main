@@ -8,8 +8,6 @@ import { HeroCardProps } from './Hero.model';
 import { HorizontalMovieListPrimary } from '@/app/ui/components/shared/HorizontalMovieList/HorizontalMovieListPrimary';
 // Next.js
 import Link from 'next/link';
-// Data URLs
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 // Routes
 import { routesPaths } from '@/app/routes/routes';
 
@@ -36,9 +34,6 @@ export function HeroCard({
     firstMovieDetails;
   const [date, setDate] = useState<number>(0);
 
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
-
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
@@ -54,7 +49,7 @@ export function HeroCard({
     <section
       className="w-full min-h-[50vh] bg-cover bg-center"
       style={{
-        backgroundImage: `url('${backgroundImage}')`,
+        backgroundImage: `url('${image2}')`,
       }}
     >
       <div className="w-full min-h-[50vh] py-20 lg:py-[5.5rem] flex flex-col justify-start items-center gap-16 bg-gradient-to-br from-bgPrimaryDark/90 via-bgPrimaryDark/50 to-transparent">

@@ -23,14 +23,14 @@ export function MovieList({ genreInfo, movieList }: MovieListProps) {
    * @returns {JSX.Element} - JSX element representing the MovieList component.
    */
   return (
-    <section className="flex place-content-center w-full py-16">
+    <section className="flex place-content-center w-full -mt-12 mb-16">
       <div className="w-11/12 md:w-10/12">
         {/* Genre Heading */}
         <h1 className="heading-3 font-bold text-textColorNeutral-50 w-fit mb-12">
           {name}
         </h1>
         {/* Movie Grid */}
-        <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 w-full">
+        <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-10 w-full">
           {movieList.map((movie: MovieAPI) => (
             <MovieCard key={`movie-${movie?.id}`} movieData={movie} />
           ))}

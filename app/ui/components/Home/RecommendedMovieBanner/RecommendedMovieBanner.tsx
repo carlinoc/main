@@ -41,15 +41,15 @@ export function RecommendedMovieBanner({
   // Destructure movieData to extract relevant information
   const { name, description, slug, image2, agerates, urlId } = movieData;
   // Construct the background image URL
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
 
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundImageUrl = background
-    ? `url('${CDN_IMAGES_BASE_URL}${background}')`
-    : `url('${backgroundImage}')`;
+  const backgroundMovie = image2?.startsWith('http')
+    ? image2
+    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
+
+  const backgroundImage = background ? `${background}` : `${backgroundMovie}`;
   /**
    * Render the JSX for the RecommendedMovieBanner component
    */
@@ -57,7 +57,7 @@ export function RecommendedMovieBanner({
     <section
       className="flex items-center justify-center w-full min-h-[100vh] bg-cover bg-center "
       style={{
-        backgroundImage: backgroundImageUrl,
+        backgroundImage: `url('${backgroundImage}')`,
       }}
     >
       <div className="relative flex items-end justify-center w-full min-h-[100vh] py-16 lg:py-24 bg-gradient-to-br from-bgPrimaryDark/70 via-bgPrimaryDark/50 to-transparent">

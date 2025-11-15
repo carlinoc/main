@@ -29,18 +29,31 @@ export function Footer(): JSX.Element {
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
             />
           </figure>
-          <div>
-            <div className="flex flex-col justify-center items-center gap-2 w-full h-full text-center">
-              <span className="span-base text-textColorNeutral-400 w-full">
-                © 2025 Cinergia, Todos los derechos reservados.
-              </span>
-              <Link href="/terminos-y-condiciones">Términos y Condiciones</Link>
-              {/* <a
-                href=""
-                className="span-base text-neutral-50 hover:text-primary-500 w-full"
-              >
+          <div className="flex flex-col justify-center items-center w-full h-full text-center">
+            <span className="span-base text-textColorNeutral-400 w-full">
+              © 2025 Cinergia, Todos los derechos reservados.
+            </span>
+
+            {/* Links lado a lado */}
+            <div className="flex items-center gap-6 mt-2 text-textColorNeutral-400">
+              {/* Link Terminos */}
+              <Link href="/terminos-y-condiciones" className="hover:underline">
                 Términos y Condiciones
-              </a> */}
+              </Link>
+
+              {/* Link Libro de Reclamaciones */}
+              <Link
+                href="/librodereclamos"
+                className="flex items-center gap-2 hover:underline"
+              >
+                <Image
+                  src="/images/libroReclamaciones.png"
+                  alt="Libro de Reclamaciones"
+                  width={50}
+                  height={50}
+                />
+                Libro de Reclamaciones
+              </Link>
             </div>
           </div>
         </div>

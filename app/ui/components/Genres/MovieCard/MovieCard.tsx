@@ -7,8 +7,6 @@ import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 // Internal Model
 import { MovieCardProps } from './MovieCard.model';
-// Internal URL
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 // Internal Routes
 import { routesPaths } from '@/app/routes/routes';
 /**
@@ -23,17 +21,11 @@ import { routesPaths } from '@/app/routes/routes';
  * @returns {JSX.Element} - JSX element representing the MovieCard component.
  */
 export function MovieCard({ movieData }: MovieCardProps) {
-  const { name, releaseYear, slug, poster1, image1, urlId } = movieData;
+  const { name, releaseYear, slug, image1, urlId, payment_type } = movieData;
   const [isImageVisible, setIsImageVisible] = useState(false);
-  const [date, setDate] = useState<number>(0);
-  const [ref, inView] = useInView({
+  const [inView] = useInView({
     triggerOnce: true,
   });
-
-  useEffect(() => {
-    const year = new Date(releaseYear).getFullYear();
-    return setDate(year);
-  }, [releaseYear]);
 
   useEffect(() => {
     /**
@@ -44,51 +36,68 @@ export function MovieCard({ movieData }: MovieCardProps) {
     }
   }, [inView, isImageVisible]);
 
-  const imageUrl = urlId == null ? image1 : `${CDN_IMAGES_BASE_URL}${poster1}`;
-  //const imageURL = `${CDN_IMAGES_BASE_URL}${poster1}`;
-  const imageSrc = isImageVisible
-    ? imageUrl
-    : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=';
-
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
   return (
-    /**
-     * Movie Card
-     *
-     * Displays a card with information about a movie.
-     *
-     * @returns {JSX.Element}
-     */
-    <li className="group overflow-hidden rounded-sm bg-dark-800 border border-dark-900">
-      <Link
-        className="relative group flex flex-col justify-center items-center"
-        href={`${linkUrl}/${slug}`}
-      >
-        <span className="relative w-full aspect-[2/3]">
+    <li className="group rounded-lg overflow-hidden bg-bgSecondaryDark shadow-md hover:shadow-lg transition-all">
+      <Link className="flex flex-col w-full" href={`${linkUrl}/${slug}`}>
+        {/* Imagen horizontal */}
+        <span className="relative w-full aspect-[2/3] md:aspect-video">
+          {/* Ícono flotante */}
+          {payment_type === 'DO' && (
+            <div className="absolute bottom-2 right-2 z-20">
+              <Image
+                src="/images/iconoPago.png"
+                alt="Pago mínimo"
+                width={30}
+                height={30}
+                className="object-contain drop-shadow-lg"
+              />
+            </div>
+          )}
+
+          {/* Imagen principal */}
           <Image
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1080px) 100vw, 1536px"
-            src={imageSrc}
+            src={image1}
             alt={name || 'Movie Card'}
             placeholder="blur"
             loading="lazy"
-            className="object-cover object-center md:group-hover:scale-110 transition-all duration-200 ease-in bg-bgMovieCard bg-cover bg-center bg-no-repeat"
+            className="object-cover object-center md:group-hover:scale-110 transition-all duration-200 ease-in"
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
           />
-          <div ref={ref} className="absolute top-0 left-0 w-full h-full" />
         </span>
-        <section className="absolute inset-0 flex justify-center items-end bg-gradient-to-t from-bgPrimaryDark via-bgPrimaryDark/10 to-transparent">
-          <div className="flex flex-col place-items-center w-full p-4 font-semibold text-center">
-            <span className="span-base line-clamp-3 text-textColorNeutral-50">
-              {name}
-            </span>
-            <span className="span-sm text-xs text-textColorAccent-500 font-bold">
-              {date}
+
+        {/* Información debajo */}
+        <div className="flex flex-col w-full p-3 bg-bgSecondaryDark">
+          {/* Título */}
+          <span className="text-base font-semibold text-white line-clamp-1">
+            {name}
+          </span>
+
+          {/* Año */}
+          <span className="text-sm text-gray-300 font-medium">
+            {releaseYear !== undefined && new Date(releaseYear).getFullYear()}
+          </span>
+
+          {/* Pago por donación */}
+          {/* {payment_type === "DO" && (
+          <div className="flex items-center gap-2 mt-2">
+            <Image
+              src="/images/iconoPago.png"
+              alt="Pago mínimo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+            <span className="text-xs text-yellow-400 font-semibold">
+              Donación mínima
             </span>
           </div>
-        </section>
+        )} */}
+        </div>
       </Link>
     </li>
   );

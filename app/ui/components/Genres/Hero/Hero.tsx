@@ -17,12 +17,13 @@ import { HeroProps } from './Hero.model';
  */
 export function Hero({ genreInfo, movieInfo }: HeroProps) {
   // Destructure key movie information
-  const { image2, urlId } = movieInfo;
+  const { image2 } = movieInfo;
   // Destructure genre information
   const { description } = genreInfo;
 
-  const pathBackground = urlId == null ? '' : `${CDN_IMAGES_BASE_URL}`;
-  const backgroundImage = `${pathBackground}${image2}`;
+  const backgroundImage = image2?.startsWith('http')
+    ? image2
+    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
 
   return (
     /**

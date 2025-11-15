@@ -9,6 +9,7 @@ interface MovieAPI {
   poster1: string; // URL for the first poster image
   poster2: string;
   urlId: string;
+  payment_type: string;
 }
 
 // Movie List API types
