@@ -174,27 +174,3 @@ export function MyListPreview({
     </section>
   );
 }
-
-/* <section className="w-full px-4 my-8">
-            <Link
-              href={''}
-              className="group button-secondary padding-button w-full"
-            >
-              Ver Más
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-chevron-right md:group-hover:translate-x-2 transition-all duration-300 ease-in-out"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M9 6l6 6l-6 6" />
-              </svg>
-            </Link>
-          </section> */

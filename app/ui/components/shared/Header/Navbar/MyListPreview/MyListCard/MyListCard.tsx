@@ -6,7 +6,6 @@ import { calculateTimeToMovie } from '@/app/lib/utils/calculateTimeToMovie';
 import { MouseEvent, TouchEvent, KeyboardEvent } from 'react';
 import { MyListCardProps } from '../MyListPreview.model';
 import { routesPaths } from '@/app/routes/routes';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 
 /**
  * MyListCard Component
@@ -43,7 +42,7 @@ export function MyListCard({ movie, handleMyListState }: MyListCardProps) {
         <Image
           fill
           sizes="320px"
-          src={`${CDN_IMAGES_BASE_URL}${poster1}`}
+          src={`${poster1}`}
           alt={name || 'Movie Card'}
           placeholder="blur"
           loading="lazy"

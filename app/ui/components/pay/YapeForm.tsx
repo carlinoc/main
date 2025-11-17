@@ -220,7 +220,7 @@ export function YapeForm({
             {/* Código OTP */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                🔒 Código OTP
+                🔒 Código de aprobación
               </label>
               <input
                 type="text"
