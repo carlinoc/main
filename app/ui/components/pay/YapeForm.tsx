@@ -234,6 +234,12 @@ export function YapeForm({
                 maxLength={6}
                 inputMode="numeric"
               />
+              <p className="text-xs text-gray-500 mt-2">
+                Ve a tu Yape y encuentra el código en{' '}
+                <span className="font-semibold">
+                  &quot;Aprobar Compras&quot;.
+                </span>
+              </p>
               {errors.otp && (
                 <div className="flex items-start gap-2 mt-2 text-red-600 text-xs bg-red-50 p-2 rounded-lg border border-red-200">
                   <span>{errors.otp}</span>
