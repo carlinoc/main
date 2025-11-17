@@ -5,7 +5,7 @@ import { HorizontalMovieListSecondary } from '@/app/ui/components/shared/Horizon
 import Figure2 from '@/app/ui/components/shared/assets/Figure2';
 import Figure3 from '@/app/ui/components/shared/assets/Figure3';
 import { homeSections } from '@/app/lib/lists/homeSectionSlugs';
-import walletImage from '@/public/images/bannerdePago.png';
+import bannerImage from '@/public/images/bannerdePago.png';
 /**
  * NewsSection Component
  *
@@ -55,7 +55,7 @@ export async function NewsSection(): Promise<JSX.Element> {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1080px) 100vw, 1536px"
                 quality={100}
-                src={walletImage}
+                src={bannerImage}
                 alt={'Wallets'}
                 placeholder="blur"
                 loading="lazy"

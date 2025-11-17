@@ -1,7 +1,6 @@
 // Import necessary dependencies and types
 import Link from 'next/link';
 import { RecommendedMovieBannerProps } from './RecommendedMovieBanner.model';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { routesPaths } from '@/app/routes/routes';
 /**
  * RecommendedMovieBanner Component
@@ -45,11 +44,7 @@ export function RecommendedMovieBanner({
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundMovie = image2?.startsWith('http')
-    ? image2
-    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
-
-  const backgroundImage = background ? `${background}` : `${backgroundMovie}`;
+  const backgroundImage = background ? `${background}` : `${image2}`;
   /**
    * Render the JSX for the RecommendedMovieBanner component
    */

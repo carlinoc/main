@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import cinergiaLogo from '@/public/cinergiaLogoWeb2.svg';
 import Link from 'next/link';
+import libroImage from '@/public/images/libroReclamaciones.png';
 /**
  * Footer Component
  *
@@ -47,7 +48,7 @@ export function Footer(): JSX.Element {
                 className="flex items-center gap-2 hover:underline"
               >
                 <Image
-                  src="/images/libroReclamaciones.png"
+                  src={libroImage}
                   alt="Libro de Reclamaciones"
                   width={50}
                   height={50}

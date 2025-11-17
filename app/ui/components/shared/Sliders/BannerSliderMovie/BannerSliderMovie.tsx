@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { HorizontalSlider } from '@/app/ui/components/shared/Sliders/HorizontalSlider';
 import { extractValuesByKey } from '@/app/lib/utils/extractValuesByKey';
 import { BannerSliderMovieProps } from './BannerSliderMovie.model';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { routesPaths } from '@/app/routes/routes';
 import { Loading } from './LoadingSkeleton';
 /**
@@ -37,11 +36,7 @@ export function BannerSliderMovie({
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundMovie = image2?.startsWith('http')
-    ? image2
-    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
-
-  const backgroundImage = background ? `${background}` : `${backgroundMovie}`;
+  const backgroundImage = background ? `${background}` : `${image2}`;
 
   const extractValuesAgregates = extractValuesByKey({
     array: agerates,

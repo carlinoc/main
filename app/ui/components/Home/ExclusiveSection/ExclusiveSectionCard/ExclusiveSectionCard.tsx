@@ -1,7 +1,6 @@
 // Import necessary dependencies and types
 import Link from 'next/link';
 import { ExclusiveSectionCardProps } from './ExclusiveSectionCard.model';
-import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { routesPaths } from '@/app/routes/routes';
 /**
  * ExclusiveSectionCard Component
@@ -27,13 +26,7 @@ export function ExclusiveSectionCard({
   const linkUrl =
     urlId == null ? `${routesPaths?.detailMovie}` : `${routesPaths?.movies}`;
 
-  const backgroundMovie = image2?.startsWith('http')
-    ? image2
-    : `${CDN_IMAGES_BASE_URL}${image2 ?? ''}`;
-
-  const backgroundImage = background
-    ? `${CDN_IMAGES_BASE_URL}${background}`
-    : `${backgroundMovie}`;
+  const backgroundImage = background ? `${background}` : `${image2}`;
 
   // Render the JSX for the ExclusiveSectionCard component
   return (
