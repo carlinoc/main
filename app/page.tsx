@@ -1,5 +1,7 @@
 // Import necessary dependencies and types
-import { Hero } from '@/app/ui/components/Home/Hero';
+
+import { ExclusiveSection } from '@/app/ui/components/Home/ExclusiveSection';
+
 import { ScrollTopButtonWrapper } from './ui/components/shared/ScrollTopButtonWrapper';
 import { Metadata } from 'next';
 /**
@@ -46,9 +48,9 @@ export default function Home(): JSX.Element {
       {/* Main content area */}
       <main className="w-full">
         {/* Hero section */}
-        <Hero />
+        {/* <Hero /> */}
         {/* ExclusiveSection component */}
-        {/* <ExclusiveSection /> */}
+        <ExclusiveSection />
         {/* NewsSection component */}
         {/* <NewsSection /> */}
         {/* ShortFilmsBannerSection component */}
