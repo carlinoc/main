@@ -2,8 +2,7 @@
  * Converts the given time in minutes to a formatted string representing hours and minutes.
  *
  * @param {number} time - The time in minutes to be converted.
- * @returns {string|number} - A formatted string representing hours and minutes (e.g., '2h 30m'), or the original value if it's not a positive integer.
- * @throws {Error} - Throws an error if the input time is not a positive integer.
+ * @returns {string} - A formatted string representing hours and minutes (e.g., '2h 30m'), or 'N/A' if invalid.
  *
  * @example
  * // Usage example:
@@ -12,26 +11,29 @@
  * console.log(formattedTime); // Output: '2h 30m'
  *
  * @example
- * // Usage example with invalid time (throws an error):
- * const invalidTime = 'abc';
- * try {
- *   const result = convertMinutesToHours(invalidTime);
- *   console.log(result); // This line won't be reached
- * } catch (error) {
- *   console.error(error.message); // Output: 'Invalid time: abc'
- * }
+ * // Usage example with invalid time:
+ * const invalidTime = 0;
+ * const result = convertMinutesToHours(invalidTime);
+ * console.log(result); // Output: 'N/A'
  */
-export const convertMinutesToHours = (time: number): string | number => {
-  // Check if the input is a positive integer
-  if (Number.isInteger(time) && time > 0) {
-    // Calculate hours and minutes
-    const hours = Math.floor(time / 60);
-    const minutes = time % 60;
-
-    // Return the formatted string
-    return `${hours}h ${minutes}m`;
+export const convertMinutesToHours = (time: number): string => {
+  // Check if the input is a valid positive integer
+  if (!time || !Number.isInteger(time) || time <= 0) {
+    return '-- min';
   }
 
-  // Throw an error for invalid input
-  throw new Error(`Invalid time: ${time}`);
+  // Calculate hours and minutes
+  const hours = Math.floor(time / 60);
+  const minutes = time % 60;
+
+  // Return the formatted string
+  if (hours === 0) {
+    return `${minutes}m`;
+  }
+
+  if (minutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${minutes}m`;
 };
