@@ -1,10 +1,4 @@
 // Import necessary dependencies and types
-import { Hero } from '@/app/ui/components/Home/Hero';
-import { ExclusiveSection } from '@/app/ui/components/Home/ExclusiveSection';
-import { NewsSection } from '@/app/ui/components/Home/NewsSection';
-import { ShortFilmsBannerSection } from '@/app/ui/components/Home/ShortFilmsBannerSection';
-// import { EventBannerSection } from '@/app/ui/components/Home/EventBannerSection';
-import { WeekMovieSection } from '@/app/ui/components/Home/WeekMovieSection';
 import { ScrollTopButtonWrapper } from './ui/components/shared/ScrollTopButtonWrapper';
 import { Metadata } from 'next';
 /**
@@ -51,17 +45,17 @@ export default function Home(): JSX.Element {
       {/* Main content area */}
       <main className="w-full">
         {/* Hero section */}
-        <Hero />
+        {/* <Hero /> */}
         {/* ExclusiveSection component */}
-        <ExclusiveSection />
+        {/* <ExclusiveSection /> */}
         {/* NewsSection component */}
-        <NewsSection />
+        {/* <NewsSection /> */}
         {/* ShortFilmsBannerSection component */}
-        <ShortFilmsBannerSection />
+        {/* <ShortFilmsBannerSection /> */}
         {/* EventBannerSection component */}
         {/* <EventBannerSection /> */}
         {/* WeekMovieSection component */}
-        <WeekMovieSection />
+        {/* <WeekMovieSection /> */}
       </main>
     </ScrollTopButtonWrapper>
   );
