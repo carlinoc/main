@@ -2,7 +2,6 @@
 // Import necessary dependencies and types
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { calculateTimeToMovie } from '@/app/lib/utils/calculateTimeToMovie';
 import { MouseEvent, TouchEvent, KeyboardEvent } from 'react';
 import { MyListCardProps } from '../MyListPreview.model';
 import { routesPaths } from '@/app/routes/routes';
@@ -19,7 +18,7 @@ import { routesPaths } from '@/app/routes/routes';
  * @returns {JSX.Element} - JSX element representing the MyListCard component.
  */
 export function MyListCard({ movie, handleMyListState }: MyListCardProps) {
-  const { name, poster1, slug, date_end, date_start } = movie;
+  const { name, poster1, slug, category } = movie;
   const router = useRouter();
 
   const handleClick = (e: MouseEvent | TouchEvent | KeyboardEvent) => {
@@ -59,10 +58,11 @@ export function MyListCard({ movie, handleMyListState }: MyListCardProps) {
           ¡Aún no has visto la película!
         </span> */}
         <span className="span-base font-medium text-textColorAccent-500">
-          {calculateTimeToMovie({
+          {category}
+          {/* {calculateTimeToMovie({
             startDate: date_start,
             endDate: date_end,
-          })}
+          })} */}
         </span>
       </div>
     </button>

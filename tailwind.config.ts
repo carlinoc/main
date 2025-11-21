@@ -90,6 +90,19 @@ const colorPalette = {
     '900': '#6f1f36',
     '950': '#4b1a2b',
   },
+  yap: {
+    '50': '#f988ff',
+    '100': '#bc4ed8',
+    '200': '#7f00b2',
+    '300': '#8916bc',
+    '400': '#7f00b2',
+    '500': '#7f00b2',
+    '600': '#7000a3',
+    '700': '#4c007d',
+    '800': '#1b004b',
+    '900': '#1b004b',
+    '950': '#1b004b',
+  },
 };
 
 const config: Config = {
@@ -116,6 +129,7 @@ const config: Config = {
         bgPrimaryDark: colorPalette.customDark[950],
         bgSecondaryDark: colorPalette.customDark[900],
         borderNeutral: colorPalette.customNeutral,
+        yap: colorPalette.yap,
       },
       backgroundImage: {
         greenBrushStroke1:

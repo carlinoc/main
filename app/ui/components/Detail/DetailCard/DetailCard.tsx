@@ -2,9 +2,10 @@ import { CDN_IMAGES_BASE_URL } from '@/app/lib/data/urls';
 import { DetailCardProps } from './DetailCard.model';
 import { InfoSection } from '../../MovieDetails/Hero/HeroCard/InfoSection';
 import { PlayVideo } from './PlayVideo';
+import { OverviewSectionSM } from '../../MovieDetails/Hero/HeroCard/OverviewSectionSM';
 
 export function DetailCard({ movieData }: DetailCardProps): JSX.Element {
-  const { image2 } = movieData;
+  const { image2, description, whySee } = movieData;
 
   const backgroundImage = image2?.startsWith('http')
     ? image2
@@ -27,6 +28,7 @@ export function DetailCard({ movieData }: DetailCardProps): JSX.Element {
           </div>
         </article>
       </section>
+      <OverviewSectionSM overview={description || ''} whySeeIt={whySee || ''} />
     </>
   );
 }

@@ -149,6 +149,7 @@ interface MovieUserList {
   image2: string; // URL for the second image
   poster1: string; // URL for the first poster image
   poster2: string; // URL for the second poster image
+  category: string; // Movie category
 }
 
 /////////////////////////////////////////////

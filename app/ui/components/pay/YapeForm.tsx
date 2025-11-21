@@ -15,7 +15,6 @@ interface YapeFormProps {
   onError: (msg: string) => void;
 }
 
-// ✅ Definimos una interfaz mínima para evitar el uso de `any`
 interface MercadoPagoInstance {
   yape: (options: { phoneNumber: string; otp: string }) => {
     create: () => Promise<{ id?: string }>;
@@ -53,7 +52,6 @@ export function YapeForm({
   }>({});
   const [alertPay, setAlertPay] = useState<string | null>(null);
 
-  // ✅ Cargar SDK solo si se abre el modal
   useEffect(() => {
     if (!isOpen) return;
     if (!window.MercadoPago) {
@@ -67,7 +65,6 @@ export function YapeForm({
 
   if (!isOpen) return null;
 
-  // ✅ Validar datos antes de enviar
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
@@ -160,19 +157,18 @@ export function YapeForm({
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/50 to-purple-900/30 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
-        {/* Decoración superior */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 opacity-10"></div>
+      <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl relative overflow-hidden flex">
+        {/* --- COLUMNA IZQUIERDA: FORMULARIO --- */}
+        <div className="w-full md:w-1/2 relative p-6">
+          {/* Botón cerrar */}
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 z-10 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 hover:rotate-90"
+          >
+            <span className="text-2xl leading-none">×</span>
+          </button>
 
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-10 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 hover:rotate-90"
-        >
-          <span className="text-2xl leading-none">×</span>
-        </button>
-
-        <div className="relative p-6">
-          {/* Logo de Cinergia */}
+          {/* Logo Cinergia */}
           <div className="flex justify-center mb-3">
             <img
               src="/cinergiaLogoWeb1.svg"
@@ -183,7 +179,7 @@ export function YapeForm({
 
           {/* Título */}
           <div className="text-center mb-4">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-yap-500 to-yap-600 bg-clip-text text-transparent mb-1">
               Donar con Yape
             </h2>
             <p className="text-xs text-gray-500">
@@ -191,17 +187,18 @@ export function YapeForm({
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Número de celular */}
+          {/* --- FORMULARIO --- */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            {/* Número celular */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 📱 Número de celular
               </label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className={`w-full border-2 rounded-xl px-4 py-2.5 text-gray-600 focus:outline-none transition-all duration-200 ${
+                className={`w-full border-2 rounded-xl px-4 py-2 text-gray-600 focus:outline-none transition-all duration-200 ${
                   errors.phone
                     ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                     : 'border-gray-200 bg-gray-50 focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100'
@@ -211,22 +208,22 @@ export function YapeForm({
                 inputMode="numeric"
               />
               {errors.phone && (
-                <div className="flex items-start gap-2 mt-2 text-red-600 text-xs bg-red-50 p-2 rounded-lg border border-red-200">
-                  <span>{errors.phone}</span>
+                <div className="mt-1 text-red-600 text-[10px] bg-red-50 p-1.5 rounded-lg border border-red-200">
+                  {errors.phone}
                 </div>
               )}
             </div>
 
             {/* Código OTP */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 🔒 Código de aprobación
               </label>
               <input
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className={`w-full border-2 rounded-xl px-4 py-2.5 text-gray-600 focus:outline-none transition-all duration-200 font-semibold ${
+                className={`w-full border-2 rounded-xl px-4 py-2 text-gray-600 font-semibold focus:outline-none transition-all duration-200 ${
                   errors.otp
                     ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                     : 'border-gray-200 bg-gray-50 focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100'
@@ -234,22 +231,22 @@ export function YapeForm({
                 maxLength={6}
                 inputMode="numeric"
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-[10px] text-gray-500 mt-1">
                 Ve a tu Yape y encuentra el código en{' '}
                 <span className="font-semibold">Aprobar Compras.</span>
               </p>
               {errors.otp && (
-                <div className="flex items-start gap-2 mt-2 text-red-600 text-xs bg-red-50 p-2 rounded-lg border border-red-200">
-                  <span>{errors.otp}</span>
+                <div className="mt-1 text-red-600 text-[10px] bg-red-50 p-1.5 rounded-lg border border-red-200">
+                  {errors.otp}
                 </div>
               )}
             </div>
 
-            {/* Monto a donar */}
+            {/* Monto */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 💰 Monto a donar{' '}
-                <span className="text-gray-400 text-xs">
+                <span className="text-gray-400 text-[10px]">
                   (mínimo S/ {formatPrice(minAmount)})
                 </span>
               </label>
@@ -262,7 +259,7 @@ export function YapeForm({
                   value={formatPrice(amount)}
                   onChange={(e) => setAmount(Number(e.target.value))}
                   step="1"
-                  className={`w-full border-2 rounded-xl pl-12 pr-4 py-2.5 text-gray-600 focus:outline-none transition-all duration-200 font-semibold ${
+                  className={`w-full border-2 rounded-xl pl-12 pr-4 py-2 text-gray-600 font-semibold focus:outline-none transition-all duration-200 ${
                     errors.amount
                       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                       : 'border-gray-200 bg-gray-50 focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100'
@@ -270,58 +267,35 @@ export function YapeForm({
                 />
               </div>
               {errors.amount && (
-                <div className="flex items-start gap-2 mt-2 text-red-600 text-xs bg-red-50 p-2 rounded-lg border border-red-200">
-                  <span>{errors.amount}</span>
+                <div className="mt-1 text-red-600 text-[10px] bg-red-50 p-1.5 rounded-lg border border-red-200">
+                  {errors.amount}
                 </div>
               )}
             </div>
 
-            {/* Botón */}
+            {/* Botón pagar */}
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 text-white font-bold rounded-xl mt-1 text-base shadow-lg transition-all duration-200 ${
+              className={`w-full py-3 text-white font-bold rounded-xl mt-1 text-sm shadow-lg transition-all duration-200 ${
                 loading
                   ? 'bg-gradient-to-r from-purple-300 to-purple-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+                  : 'bg-gradient-to-r from-yap-400 to-yap-500 hover:from-yap-500 hover:to-yap-600 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
               }`}
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Procesando pago...
-                </span>
-              ) : (
-                `Yapear S/ ${formatPrice(amount)}`
-              )}
+              {loading
+                ? 'Procesando pago...'
+                : `Yapear S/ ${formatPrice(amount)}`}
             </button>
 
-            {/* Alerta de pago */}
             {alertPay && (
-              <div className="mt-1 text-center px-4 py-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100 text-red-700 border-2 border-red-200 shadow-md animate-in slide-in-from-top duration-300">
-                <div className="flex items-center justify-center gap-2 font-medium text-sm">
-                  <span>{alertPay}</span>
-                </div>
+              <div className="mt-1 text-center px-4 py-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100 text-red-700 border-2 border-red-200 shadow-md text-sm">
+                {alertPay}
               </div>
             )}
           </form>
 
-          {/* Logos de Yape y Mercado Pago */}
+          {/* Logos */}
           <div className="flex items-center justify-center gap-6 mt-5 pt-4 border-t-2 border-gray-100">
             <img
               src="/images/logoyape1.png"
@@ -336,10 +310,18 @@ export function YapeForm({
             />
           </div>
 
-          {/* Texto de seguridad */}
-          <p className="text-center text-xs text-gray-400 mt-3">
+          <p className="text-center text-[10px] text-gray-400 mt-2">
             🔐 Pago seguro y encriptado
           </p>
+        </div>
+
+        {/* --- COLUMNA DERECHA: BANNER SVG --- */}
+        <div className="hidden md:flex w-1/2 items-center justify-center bg-gray-50 p-6">
+          <img
+            src="/images/yapeBanner.svg"
+            alt="Yape Banner"
+            className="w-full h-auto object-contain"
+          />
         </div>
       </div>
     </div>
