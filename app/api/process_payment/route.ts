@@ -36,6 +36,14 @@ interface MercadoPagoError {
   message?: string;
 }
 
+/* Tipo de cambio interno USD a PEN */
+const USD_EXCHANGE_RATE = Number(process.env.USD_EXCHANGE_RATE || 3.7);
+
+/* Convierte USD a PEN */
+const convertUsdToPen = (usdAmount: number): number => {
+  return Number((usdAmount * USD_EXCHANGE_RATE).toFixed(2));
+};
+
 export async function POST(request: NextRequest) {
   try {
     const body: PaymentBody = await request.json();
@@ -53,12 +61,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const originalUsdAmount = Number(body.transaction_amount);
+    const penAmount = convertUsdToPen(originalUsdAmount);
+
+    const installmentsParsed = body.installments
+      ? Number(body.installments)
+      : 1;
+
     // Crear el pago
     const paymentData = {
-      transaction_amount: body.transaction_amount,
+      transaction_amount: penAmount,
       token: body.token,
-      description: body.description || 'Compra en tienda',
-      installments: body.installments || 1,
+      description: body.description || 'Donación',
+      installments: installmentsParsed,
       payment_method_id: body.payment_method_id,
       issuer_id: body.issuer_id ? Number(body.issuer_id) : undefined,
       payer: {
@@ -69,7 +84,7 @@ export async function POST(request: NextRequest) {
         },
       },
       external_reference: `order_${Date.now()}`,
-      statement_descriptor: 'MI TIENDA',
+      statement_descriptor: 'DONACION-ONLINE',
     };
 
     // Ejecutar el pago
@@ -80,19 +95,6 @@ export async function POST(request: NextRequest) {
       status: result.status,
       id: result.id,
     });
-
-    // Si el pago fue aprobado, manejar tu lógica de negocio
-    if (result.status === 'approved' && body.movieId && body.userId) {
-      try {
-        console.log('📽️ Agregando película al usuario:', {
-          userId: body.userId,
-          movieId: body.movieId,
-        });
-        // await addMovieToUserList({ userId: body.userId, movieId: body.movieId });
-      } catch (dbError) {
-        console.error('Error agregando película al usuario:', dbError);
-      }
-    }
 
     return NextResponse.json({
       status: result.status,

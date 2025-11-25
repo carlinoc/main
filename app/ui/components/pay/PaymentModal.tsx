@@ -214,9 +214,7 @@ export default function PaymentModal({
         payment_method_id: selectedPaymentMethod,
         transaction_amount: customAmount,
         installments: 1,
-        description: movieId
-          ? `Donación para ver película ${movieId}`
-          : 'Donación',
+        description: movieId ? `Donación para: ${movieId}` : 'Donación',
         payer: {
           email: (form.email as HTMLInputElement).value,
           identification: {

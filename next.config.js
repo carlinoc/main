@@ -2,6 +2,7 @@
 const nextConfig = {
   // output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -28,10 +29,10 @@ const nextConfig = {
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true, // 👈 ignora los warnings de ESLint en build
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // 👈 ignora errores de tipos (si existen)
+    ignoreBuildErrors: true, 
   },
 };
 
