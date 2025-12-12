@@ -27,6 +27,16 @@ interface PaymentBody {
   };
   userId?: string;
   movieId?: string;
+  device_id?: string;
+  items?: {
+    id: string;
+    title: string;
+    description: string;
+    picture_url: string;
+    category_id: string;
+    quantity: number;
+    unit_price: number;
+  }[];
 }
 
 interface MercadoPagoError {
@@ -83,8 +93,15 @@ export async function POST(request: NextRequest) {
           number: body.payer.identification.number,
         },
       },
-      external_reference: `order_${Date.now()}`,
+      external_reference: `CNG-${body.userId || 'GUEST'}-${body.movieId || 'GEN'}-${Date.now()}`,
       statement_descriptor: 'DONACION-ONLINE',
+      device_id: body.device_id,
+      additional_info: {
+        items: body.items,
+      },
+      notification_url:
+        process.env.NEXT_PUBLIC_WEBHOOK_URL ||
+        'https://www.cinergia.lat/api/webhook',
     };
 
     // Ejecutar el pago

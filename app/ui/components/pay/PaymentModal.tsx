@@ -4,6 +4,12 @@ import { useEffect, useState, useRef } from 'react';
 import { saveMoviePay } from '@/app/lib/data/saveMoviePay';
 import { formatPrice } from '@/app/lib/utils/formatPrice';
 
+declare global {
+  interface Window {
+    MP_DEVICE_SESSION_ID?: string;
+  }
+}
+
 // Tipos locales para este componente
 type IdentificationType = {
   id: string;
@@ -207,6 +213,7 @@ export default function PaymentModal({
         }) => Promise<{ id: string }>;
       };
       const token = await mp.createCardToken(cardData);
+      const deviceId = window.MP_DEVICE_SESSION_ID;
 
       const paymentData = {
         token: token.id,
@@ -225,6 +232,20 @@ export default function PaymentModal({
         movieId,
         userId,
         userEmail: userEmail || (form.email as HTMLInputElement).value,
+        device_id: deviceId,
+        items: [
+          {
+            id: movieId || 'donation',
+            title: 'Donación Cinergia',
+            description: movieId
+              ? `Donación para: ${movieId}`
+              : 'Donación general',
+            picture_url: 'https://cinergia.lat/images/logo-web-2B.png',
+            category_id: 'donations',
+            quantity: 1,
+            unit_price: customAmount,
+          },
+        ],
       };
 
       const response = await fetch('/api/process_payment', {

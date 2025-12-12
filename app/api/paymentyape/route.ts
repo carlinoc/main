@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
-// ⚙️ Token privado desde variables de entorno (.env.local)
+// Token privado desde variables de entorno (.env.local)
 const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
 
 // Inicializamos el cliente con el access token
@@ -38,6 +38,16 @@ export async function POST(req: NextRequest) {
       installments: Number(body.installments) || 1,
       payment_method_id: 'yape',
       payer: { email: body.payer.email },
+      metadata: { device_id: body.device_id },
+      additional_info: {
+        items: body.items,
+        ip_address: '127.0.0.1', // Optional but good for fraud prevention, ideally get from headers
+      },
+      notification_url:
+        process.env.NEXT_PUBLIC_WEBHOOK_URL ||
+        'https://www.cinergia.lat/api/webhook',
+      external_reference: `CNG-${body.userId || 'GUEST'}-${body.movieId || 'GEN'}-${Date.now()}`,
+      device_id: body.device_id,
     };
 
     // Llamada al endpoint de MercadoPago para crear el pago

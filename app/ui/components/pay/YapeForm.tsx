@@ -27,6 +27,7 @@ declare global {
       publicKey: string,
       options: { locale: string },
     ) => MercadoPagoInstance;
+    MP_DEVICE_SESSION_ID?: string;
   }
 }
 
@@ -103,6 +104,7 @@ export function YapeForm({
       }
 
       const mp = new window.MercadoPago(publicKey, { locale: 'es-PE' });
+      const deviceId = window.MP_DEVICE_SESSION_ID;
       const yape = mp.yape({ phoneNumber: phone, otp });
       const tokenRes = await yape.create();
       if (!tokenRes?.id) throw new Error('Error generando token Yape');
@@ -117,6 +119,20 @@ export function YapeForm({
           installments: 1,
           payment_method_id: 'yape',
           payer: { email: userEmail },
+          device_id: deviceId,
+          userId,
+          movieId,
+          items: [
+            {
+              id: movieId,
+              title: 'Donación Cinergia',
+              description: `Donación para película ID: ${movieId}`,
+              picture_url: 'https://cinergia.lat/images/logo-web-2B.png',
+              category_id: 'donations',
+              quantity: 1,
+              unit_price: amount,
+            },
+          ],
         }),
       });
 
@@ -145,6 +161,7 @@ export function YapeForm({
         );
       }
     } catch (err: unknown) {
+      console.error('Error al realizar el pago:', err);
       if (err instanceof Error) {
         onError(`Error al realizar el pago: ${err.message}`);
       } else {

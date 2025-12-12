@@ -86,6 +86,8 @@ export default function SignInPage(): JSX.Element {
           {/* LEFT SECTION */}
           <section
             className="
+            hidden
+            lg:block
         relative w-full 
         lg:w-3/5 
         min-h-[750px]              /* Mantiene altura en móviles */
